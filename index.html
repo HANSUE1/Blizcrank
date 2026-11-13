@@ -4,13 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blitzcrank — Gaming Gear Store</title>
+  <meta name="description" content="Gaming laptops, PC components, peripherals and consoles. 100% brand new, shipped nationwide from Manila and Cebu." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23e0a93f'/%3E%3Cpath d='M18 4 8 18h6l-2 10 12-15h-7z' fill='%23100d05'/%3E%3C/svg%3E" />
 </head>
-<body>
+<body class="is-loading">
+  <a class="skip-link" href="#catalog">Skip to products</a>
+
+  <!-- ===== Announcement bar ===== -->
+  <div class="announce" role="region" aria-label="Store announcements">
+    <div class="announce-track">
+      <p class="announce-msg is-active"><span class="gold">⚡</span> Free shipping in Metro Manila on orders ₱10,000+</p>
+      <p class="announce-msg">New here? Use code <strong>WELCOME10</strong> for 10% off your first order</p>
+      <p class="announce-msg">Cash on delivery available nationwide · Ships from Manila &amp; Cebu</p>
+    </div>
+  </div>
 
   <!-- ===== Header ===== -->
   <header class="site-header">
@@ -37,56 +48,206 @@
           <span class="action-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.8-3.6 3.8-5.6 7.2-5.6s6.4 2 7.2 5.6"/></svg>
           </span>
-          <span class="action-label">Account</span>
+          <span class="action-label" id="account-label">Sign in</span>
         </button>
-        <button class="action" id="wishlist-btn" type="button">
+        <button class="action" id="wishlist-btn" type="button" aria-label="Wishlist">
           <span class="action-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20.3 4.9 13A4.8 4.8 0 0 1 12 6.4 4.8 4.8 0 0 1 19.1 13Z"/></svg>
-            <span class="badge" id="wishlist-count">5</span>
+            <span class="badge" id="wishlist-count" hidden>0</span>
           </span>
           <span class="action-label">Wishlist</span>
         </button>
-        <button class="action" id="cart-btn" type="button">
+        <button class="action" id="cart-btn" type="button" aria-label="Cart">
           <span class="action-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.1 11.2a1.6 1.6 0 0 0 1.6 1.3h7.9a1.6 1.6 0 0 0 1.6-1.2L20.5 8H6"/><circle cx="9.6" cy="20" r="1.4"/><circle cx="16.6" cy="20" r="1.4"/></svg>
-            <span class="badge" id="cart-count">3</span>
+            <span class="badge" id="cart-count" hidden>0</span>
           </span>
           <span class="action-label">Cart</span>
         </button>
       </nav>
     </div>
+
+    <nav class="main-nav" aria-label="Shop by category">
+      <div class="nav-inner" id="main-nav"></div>
+    </nav>
   </header>
 
-  <!-- ===== Main ===== -->
-  <main class="page">
-    <section class="featured" aria-labelledby="featured-title">
-      <div class="featured-head">
-        <div class="featured-titles">
-          <h1 id="featured-title" class="featured-title">Featured <span class="gold">Gear</span></h1>
-          <p class="featured-sub">Hand-picked hardware this week</p>
-        </div>
-        <div class="filters" id="filters" role="tablist" aria-label="Product categories">
-          <button class="filter is-active" data-category="all" role="tab" aria-selected="true">All</button>
-          <button class="filter" data-category="laptops" role="tab" aria-selected="false">Laptops</button>
-          <button class="filter" data-category="components" role="tab" aria-selected="false">Components</button>
-          <button class="filter" data-category="peripherals" role="tab" aria-selected="false">Peripherals</button>
-          <button class="filter" data-category="consoles" role="tab" aria-selected="false">Consoles</button>
-        </div>
+  <main>
+    <!-- ===== Hero carousel ===== -->
+    <section class="hero" id="hero" aria-roledescription="carousel" aria-label="Featured promotions">
+      <div class="hero-track"></div>
+      <div class="hero-controls">
+        <button class="hero-arrow" type="button" data-hero="prev" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg></button>
+        <div class="hero-dots"></div>
+        <button class="hero-arrow" type="button" data-hero="next" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></button>
       </div>
+    </section>
 
-      <div class="grid" id="product-grid"><!-- cards injected by script.js --></div>
+    <!-- ===== Trust strip ===== -->
+    <section class="trust" aria-label="Why shop with us">
+      <ul class="trust-inner">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.4 3.4 8.2 8 9 4.6-.8 8-4.6 8-9V6l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span><strong>100% brand new</strong>Official units with local warranty</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+          <span><strong>Nationwide shipping</strong>1–3 days in Metro Manila</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h3"/></svg>
+          <span><strong>Pay your way</strong>COD, GCash, Maya &amp; cards</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+          <span><strong>Secure checkout</strong>We never store your card details</span></li>
+      </ul>
+    </section>
 
-      <div class="empty-state" id="empty-state" hidden>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.8-3.8"/><path d="M8.5 11h5"/></svg>
-        <p class="empty-title">No gear found</p>
-        <p class="empty-sub">Try a different search or category.</p>
+    <div class="page">
+      <!-- ===== Shop by category ===== -->
+      <section class="section" id="shop-categories" aria-labelledby="cat-title">
+        <div class="section-head">
+          <h2 class="section-title" id="cat-title">Shop by <span class="gold">category</span></h2>
+        </div>
+        <div class="cat-tiles" id="cat-tiles"></div>
+      </section>
+
+      <!-- ===== Rails ===== -->
+      <section class="section" data-rail="new" aria-labelledby="rail-new-title">
+        <div class="section-head">
+          <h2 class="section-title" id="rail-new-title">New <span class="gold">arrivals</span></h2>
+          <div class="rail-nav">
+            <a class="view-all" href="#catalog" data-link="#category=all">View all</a>
+            <button class="rail-arrow" type="button" data-rail-scroll="-1" aria-label="Scroll new arrivals left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg></button>
+            <button class="rail-arrow" type="button" data-rail-scroll="1" aria-label="Scroll new arrivals right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="rail"></div>
+      </section>
+
+      <section class="section" data-rail="deals" aria-labelledby="rail-deals-title">
+        <div class="section-head">
+          <h2 class="section-title" id="rail-deals-title">Hot <span class="gold">deals</span></h2>
+          <div class="rail-nav">
+            <a class="view-all" href="#catalog" data-link="#deals">View all</a>
+            <button class="rail-arrow" type="button" data-rail-scroll="-1" aria-label="Scroll deals left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m15 6-6 6 6 6"/></svg></button>
+            <button class="rail-arrow" type="button" data-rail-scroll="1" aria-label="Scroll deals right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m9 6 6 6-6 6"/></svg></button>
+          </div>
+        </div>
+        <div class="rail"></div>
+      </section>
+
+      <section class="section" data-rail="preorders" aria-labelledby="rail-pre-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="rail-pre-title">Pre-<span class="gold">orders</span></h2>
+            <p class="section-sub">Reserve now, we ship on release day</p>
+          </div>
+          <div class="rail-nav">
+            <a class="view-all" href="#catalog" data-link="#preorders">View all</a>
+          </div>
+        </div>
+        <div class="rail"></div>
+      </section>
+
+      <!-- ===== Full catalog ===== -->
+      <section class="featured section" id="catalog" aria-labelledby="featured-title" tabindex="-1">
+        <div class="featured-head">
+          <div class="featured-titles">
+            <h2 id="featured-title" class="featured-title">Shop all <span class="gold">gear</span></h2>
+            <p class="featured-sub" id="catalog-sub" aria-live="polite">Loading…</p>
+          </div>
+          <label class="sort">
+            <span>Sort</span>
+            <select id="sort">
+              <option value="featured">Most popular</option>
+              <option value="newest">Newest</option>
+              <option value="price_asc">Price: low to high</option>
+              <option value="price_desc">Price: high to low</option>
+              <option value="rating">Top rated</option>
+            </select>
+          </label>
+        </div>
+        <div class="filters" id="filters" aria-label="Filter by category"></div>
+
+        <div class="grid" id="product-grid"></div>
+
+        <div class="empty-state" id="empty-state" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-3.8-3.8"/><path d="M8.5 11h5"/></svg>
+          <p class="empty-title">No gear found</p>
+          <p class="empty-sub">Try a different search or category.</p>
+          <button class="btn btn-ghost" type="button" id="clear-filters">Clear filters</button>
+        </div>
+      </section>
+
+      <!-- ===== Brands ===== -->
+      <section class="section brands" aria-labelledby="brands-title">
+        <div class="section-head"><h2 class="section-title" id="brands-title">Top <span class="gold">brands</span></h2></div>
+        <ul class="brand-strip" id="brand-strip"></ul>
+      </section>
+    </div>
+
+    <!-- ===== Newsletter ===== -->
+    <section class="newsletter" aria-labelledby="nl-title">
+      <div class="newsletter-inner">
+        <div>
+          <h2 class="section-title" id="nl-title">Get first dibs on <span class="gold">drops</span></h2>
+          <p class="section-sub">Restocks, pre-order openings and member-only deals. No spam, unsubscribe any time.</p>
+        </div>
+        <form class="newsletter-form" id="newsletter-form">
+          <label class="sr-only" for="nl-email">Email address</label>
+          <input id="nl-email" type="email" name="email" placeholder="you@email.com" autocomplete="email" required />
+          <button class="btn btn-gold" type="submit">Subscribe</button>
+        </form>
       </div>
     </section>
   </main>
 
-  <!-- ===== Toast ===== -->
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- ===== Footer ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#" aria-label="Blitzcrank home">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1.5 8L19 9h-7l1-7Z" fill="currentColor"/></svg></span>
+          <span class="brand-text"><span class="brand-name">Blitzcrank</span><span class="brand-tag">Gaming Gear Store</span></span>
+        </a>
+        <p class="muted">Laptops, components, peripherals and consoles for Filipino gamers. Every unit brand new, shipped from Manila and Cebu.</p>
+      </div>
+      <nav class="footer-col" aria-label="Shop">
+        <h3>Shop</h3>
+        <ul>
+          <li><a href="#catalog" data-link="#category=laptops">Laptops</a></li>
+          <li><a href="#catalog" data-link="#category=components">Components</a></li>
+          <li><a href="#catalog" data-link="#category=peripherals">Peripherals</a></li>
+          <li><a href="#catalog" data-link="#category=consoles">Consoles</a></li>
+          <li><a href="#catalog" data-link="#deals">Deals</a></li>
+          <li><a href="#catalog" data-link="#preorders">Pre-orders</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-col" aria-label="Help">
+        <h3>Help</h3>
+        <ul>
+          <li><button type="button" data-link="#order-status">Order status</button></li>
+          <li><button type="button" data-link="#shipping">Shipping &amp; delivery</button></li>
+          <li><button type="button" data-link="#account">My account</button></li>
+          <li><button type="button" data-link="#cart">My cart</button></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <h3>We accept</h3>
+        <ul class="pay-chips">
+          <li>Cash on delivery</li><li>GCash</li><li>Maya</li><li>Visa</li><li>Mastercard</li><li>PayPal</li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-legal">© <span id="year"></span> Blitzcrank Gaming Gear Store. Prices in Philippine pesos, VAT included.</p>
+  </footer>
 
-  <script src="script.js"></script>
+  <!-- ===== Dialogs ===== -->
+  <dialog id="product-dialog" class="modal modal-wide" aria-label="Product details"></dialog>
+  <dialog id="cart-drawer" class="drawer" aria-label="Shopping cart"></dialog>
+  <dialog id="wishlist-drawer" class="drawer drawer-wide" aria-label="Wishlist"></dialog>
+  <dialog id="account-dialog" class="modal" aria-label="Account"></dialog>
+  <dialog id="info-dialog" class="modal" aria-label="Information"></dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" popover="manual"></div>
+
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>
