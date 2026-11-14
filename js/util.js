@@ -1,23 +1,5 @@
-// Shared helpers: API calls, formatting, escaping, toast, dialogs.
-
-export function api(method, path, body) {
-  return fetch(path, {
-    method,
-    credentials: "same-origin",
-    headers: body ? { "Content-Type": "application/json" } : {},
-    body: body ? JSON.stringify(body) : undefined,
-  }).then((res) =>
-    res.json().catch(() => ({})).then((data) => {
-      if (!res.ok) {
-        const err = new Error((data.error && data.error.message) || `Request failed (${res.status})`);
-        err.status = res.status;
-        err.code = data.error && data.error.code;
-        throw err;
-      }
-      return data;
-    })
-  );
-}
+// Shared helpers: formatting, escaping, toast, dialogs.
+// (No API — this is a frontend-only static app.)
 
 export const money = (cents) => "₱" + (cents / 100).toLocaleString("en-PH", { maximumFractionDigits: 2 });
 

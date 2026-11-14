@@ -1,7 +1,7 @@
 // Homepage sections: category nav + mega menus, hero carousel, category tiles,
 // brand strip, announcement bar, newsletter.
 
-import { api, esc, showToast, reducedMotion } from "./util.js";
+import { esc, showToast, reducedMotion } from "./util.js";
 import { state } from "./store.js";
 import { art, CATEGORY_ART } from "./art.js";
 
@@ -145,16 +145,15 @@ export function startAnnouncements() {
 
 export function setupNewsletter() {
   const form = document.getElementById("newsletter-form");
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const btn = form.querySelector("button");
-    btn.disabled = true;
+    const email = form.elements.email.value;
+    // Frontend-only: no server to subscribe to. Store locally.
     try {
-      await api("POST", "/api/newsletter", { email: form.elements.email.value, source: "homepage" });
-      form.innerHTML = '<p class="newsletter-done"><span class="gold">✓</span> You\'re in! Watch your inbox for drops and deals.</p>';
-    } catch (err) {
-      showToast(esc(err.message));
-      btn.disabled = false;
-    }
+      const subs = JSON.parse(localStorage.getItem("blitzcrank-newsletter") || "[]");
+      if (!subs.includes(email)) subs.push(email);
+      localStorage.setItem("blitzcrank-newsletter", JSON.stringify(subs));
+    } catch { /* ignore */ }
+    form.innerHTML = '<p class="newsletter-done"><span class="gold">✓</span> You\'re in! Watch your inbox for drops and deals.</p>';
   });
 }

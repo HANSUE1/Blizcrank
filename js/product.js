@@ -1,14 +1,14 @@
-// Product quick view: gallery art, variant picker, stock, quantity, specs, reviews.
+// Product quick view: gallery art, variant picker, stock, quantity, specs.
+// Frontend-only: product data from state.bySlug (loaded from catalog.json).
 
-import { api, esc, money, fmtDate, starsHTML, showToast, openDialog, setupDialog, closeIcon, spinner } from "./util.js";
+import { esc, money, fmtDate, starsHTML, showToast, openDialog, setupDialog, closeIcon } from "./util.js";
 import { state, on, addToCart, toggleWish } from "./store.js";
 import { mediaHTML } from "./cards.js";
-import { openAccount } from "./account.js";
 
 const dlg = document.getElementById("product-dialog");
 setupDialog(dlg);
 
-let current = null;   // full product from /api/products/:slug
+let current = null;
 let variant = null;
 let qty = 1;
 
@@ -19,30 +19,14 @@ function stockText(v) {
   return '<span class="stock is-in">In stock · ships in 1–2 days</span>';
 }
 
-function reviewFormHTML() {
-  if (!state.user) {
-    return `<p class="muted">Bought this? <button class="link-btn" type="button" data-pd="signin">Sign in</button> to write a review.</p>`;
-  }
-  const stars = [5, 4, 3, 2, 1].map((n) =>
-    `<input type="radio" id="rv-${n}" name="rating" value="${n}" required /><label for="rv-${n}" title="${n} star${n > 1 ? "s" : ""}">★</label>`).join("");
-  return `
-    <form class="review-form" id="review-form">
-      <p class="field-label">Your rating</p>
-      <div class="star-input" role="radiogroup" aria-label="Rating">${stars}</div>
-      <label class="field"><span>Title</span><input name="title" maxlength="120" /></label>
-      <label class="field"><span>Review</span><textarea name="body" rows="3" maxlength="4000"></textarea></label>
-      <button class="btn btn-ghost" type="submit">Post review</button>
-    </form>`;
-}
-
 function render() {
   const p = current;
   const v = variant;
   const wished = !!state.wished[p.slug];
   const maxQty = Math.max(1, Math.min(99, v.stock));
   const price = `<span class="price">${money(v.priceCents)}</span>` +
-                (v.compareAtCents ? `<span class="price-old">${money(v.compareAtCents)}</span>` +
-                  `<span class="save">Save ${money(v.compareAtCents - v.priceCents)}</span>` : "");
+    (v.compareAtCents ? `<span class="price-old">${money(v.compareAtCents)}</span>` +
+      `<span class="save">Save ${money(v.compareAtCents - v.priceCents)}</span>` : "");
 
   const variants = p.variants.length > 1 ? `
     <fieldset class="variants">
@@ -55,17 +39,6 @@ function render() {
   const specs = p.specs.length ? `
     <table class="specs"><tbody>${p.specs.map((s) =>
       `<tr><th scope="row">${esc(s.label)}</th><td>${esc(s.value)}${s.unit ? " " + esc(s.unit) : ""}</td></tr>`).join("")}</tbody></table>` : "";
-
-  const reviews = p.reviews.length
-    ? p.reviews.map((r) => `
-        <article class="review">
-          <div class="review-head"><span class="card-rating">${starsHTML(r.rating, 1).replace(/\(1\)/, "")}</span>
-            ${r.verifiedPurchase ? '<span class="verified">Verified purchase</span>' : ""}</div>
-          ${r.title ? `<h4>${esc(r.title)}</h4>` : ""}
-          ${r.body ? `<p>${esc(r.body)}</p>` : ""}
-          <p class="muted small">${esc(r.author)} · ${fmtDate(r.createdAt)}</p>
-        </article>`).join("")
-    : '<p class="muted">No reviews yet. Be the first.</p>';
 
   dlg.innerHTML = `
     <div class="pd">
@@ -100,23 +73,24 @@ function render() {
       <div class="pd-more">
         ${specs ? `<section><h3 class="pd-h">Specifications</h3>${specs}</section>` : ""}
         <section><h3 class="pd-h">Reviews ${p.reviewCount ? `<span class="muted">(${p.reviewCount})</span>` : ""}</h3>
-          ${reviews}${reviewFormHTML()}</section>
+          <p class="muted">No reviews yet. Be the first.</p></section>
       </div>
     </div>`;
   dlg.setAttribute("aria-labelledby", "pd-title");
 }
 
 export async function openProduct(slug) {
-  dlg.innerHTML = `<div class="pd-loading">${spinner()}</div>`;
+  dlg.innerHTML = '<div class="pd-loading"><div class="loading" role="status"><span class="spin" aria-hidden="true"></span>Loading…</div></div>';
   openDialog(dlg);
-  try {
-    current = (await api("GET", `/api/products/${encodeURIComponent(slug)}`)).product;
-    variant = current.variants.find((v) => v.inStock) || current.variants[0];
-    qty = 1;
-    render();
-  } catch (err) {
-    dlg.innerHTML = `<div class="pd-loading"><p>${esc(err.message)}</p><button class="btn btn-ghost" data-close>Close</button></div>`;
+  const p = state.bySlug[slug];
+  if (!p) {
+    dlg.innerHTML = '<div class="pd-loading"><p>Product not found.</p><button class="btn btn-ghost" data-close>Close</button></div>';
+    return;
   }
+  current = p;
+  variant = p.variants.find((v) => v.inStock) || p.variants[0];
+  qty = 1;
+  render();
 }
 
 dlg.addEventListener("click", async (e) => {
@@ -149,26 +123,7 @@ dlg.addEventListener("click", async (e) => {
       const added = await toggleWish(current.slug);
       showToast(added ? '<span class="gold">♥</span> Saved to wishlist' : "Removed from wishlist");
     } catch (err) { showToast(esc(err.message)); }
-  } else if (act === "signin") {
-    openAccount();
   }
 });
 
-dlg.addEventListener("submit", async (e) => {
-  if (e.target.id !== "review-form") return;
-  e.preventDefault();
-  const f = new FormData(e.target);
-  try {
-    const r = await api("POST", `/api/products/${current.slug}/reviews`,
-      { rating: Number(f.get("rating")), title: f.get("title"), body: f.get("body") });
-    showToast(r.verifiedPurchase ? "Thanks! Your verified review is posted." : "Thanks! Your review is posted.");
-    const keep = variant.id;
-    current = (await api("GET", `/api/products/${current.slug}`)).product;
-    variant = current.variants.find((v) => v.id === keep) || current.variants[0];
-    render();
-  } catch (err) { showToast(esc(err.message)); }
-});
-
-// Keep the heart / review form in sync if the user signs in from inside the dialog.
 on("wishlist", () => { if (dlg.open && current) render(); });
-on("user", () => { if (dlg.open && current) render(); });

@@ -1,9 +1,9 @@
-// Cart drawer: items, coupon, shipping estimate, checkout form, confirmation.
+// Cart drawer: items, shipping estimate, checkout form, confirmation.
+// Frontend-only: cart in localStorage, orders in localStorage.
 
-import { api, esc, money, showToast, openDialog, setupDialog, dialogHead, spinner } from "./util.js";
+import { esc, money, showToast, openDialog, setupDialog, dialogHead, spinner } from "./util.js";
 import { state, on, refreshCart, setRegion, setQty, removeItem, applyCoupon, removeCoupon } from "./store.js";
 import { art } from "./art.js";
-import { openAccount } from "./account.js";
 
 const dlg = document.getElementById("cart-drawer");
 setupDialog(dlg);
@@ -20,6 +20,15 @@ const PAYMENT_METHODS = [
   ["paypal", "PayPal", ""],
 ];
 
+const ORDERS_KEY = "blitzcrank-orders";
+
+function readOrders() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; } catch { return []; }
+}
+function writeOrders(orders) {
+  try { localStorage.setItem(ORDERS_KEY, JSON.stringify(orders)); } catch { /* ignore */ }
+}
+
 function regionSelect(id) {
   return `<select id="${id}" name="region" required>
     <option value="">Select region…</option>
@@ -33,13 +42,12 @@ function summaryHTML(c) {
     : c.shippingCents === 0 ? '<span class="free">Free</span>' : money(c.shippingCents);
   let hint = "";
   if (ship && c.shippingCents > 0 && ship.freeOverCents) {
-    const gap = ship.freeOverCents - (c.subtotalCents - c.discountCents);
+    const gap = ship.freeOverCents - c.subtotalCents;
     if (gap > 0) hint = `<p class="ship-hint">Add ${money(gap)} more for free shipping to ${esc(ship.region)}</p>`;
   }
   return `
     <dl class="summary">
       <div><dt>Subtotal</dt><dd>${money(c.subtotalCents)}</dd></div>
-      ${c.discountCents ? `<div class="is-discount"><dt>Discount${c.coupon ? ` (${esc(c.coupon.code)})` : ""}</dt><dd>−${money(c.discountCents)}</dd></div>` : ""}
       <div><dt>Shipping${ship ? ` <span class="muted small">· ${ship.etaDays[0]}–${ship.etaDays[1]} days</span>` : ""}</dt><dd>${shipText}</dd></div>
       <div class="total"><dt>Total</dt><dd>${money(c.totalCents)}</dd></div>
     </dl>
@@ -83,19 +91,9 @@ function cartView() {
       </li>`;
   }).join("");
 
-  const coupon = c.coupon
-    ? `<div class="coupon-applied${c.coupon.valid ? "" : " is-invalid"}">
-         <span><strong>${esc(c.coupon.code)}</strong> ${esc(c.coupon.valid ? c.coupon.description : c.coupon.message)}</span>
-         <button class="link-btn" type="button" data-cart="uncoupon">Remove</button></div>`
-    : `<form class="coupon-form" id="coupon-form">
-         <label class="sr-only" for="coupon-code">Coupon code</label>
-         <input id="coupon-code" name="code" placeholder="Coupon code" autocomplete="off" maxlength="40" required />
-         <button class="btn btn-ghost" type="submit">Apply</button></form>`;
-
   return dialogHead(`Your cart <span class="muted">(${c.itemCount})</span>`) + `
     <ul class="lines">${items}</ul>
     <div class="drawer-foot">
-      ${coupon}
       <label class="field field-inline"><span>Ship to</span>${regionSelect("cart-region")}</label>
       ${summaryHTML(c)}
       <button class="btn btn-gold btn-block" type="button" data-cart="checkout" ${problems ? "disabled" : ""}>
@@ -119,9 +117,7 @@ function checkoutView() {
     </header>
     <form class="checkout" id="checkout-form">
       <h2 class="dlg-title">Checkout</h2>
-      ${u ? `<p class="muted small">Signed in as ${esc(u.email)}</p>` : `
-        <p class="muted small">Have an account? <button class="link-btn" type="button" data-cart="signin">Sign in</button> for faster checkout.</p>
-        <label class="field"><span>Email for order updates</span><input type="email" name="email" autocomplete="email" required /></label>`}
+      <p class="muted small">This is a demo — no payment will be processed.</p>
       <fieldset>
         <legend class="field-label">Shipping address</legend>
         <div class="field-row">
@@ -138,7 +134,6 @@ function checkoutView() {
           <label class="field"><span>Postal code</span><input name="postalCode" autocomplete="postal-code" required maxlength="12" inputmode="numeric" /></label>
         </div>
         <label class="field"><span>Region (for shipping)</span>${regionSelect("checkout-region")}</label>
-        ${u ? '<label class="check"><input type="checkbox" name="saveAddress" checked /> Save this address to my account</label>' : ""}
       </fieldset>
       <fieldset>
         <legend class="field-label">Payment</legend>
@@ -147,7 +142,7 @@ function checkoutView() {
       <label class="field"><span>Order notes (optional)</span><textarea name="notes" rows="2" maxlength="500"></textarea></label>
       ${summaryHTML(c)}
       <button class="btn btn-gold btn-block" type="submit" ${busy ? "disabled" : ""}>Place order · ${money(c.totalCents)}</button>
-      <p class="muted small center">By placing your order you agree to our terms. Prices include VAT.</p>
+      <p class="muted small center">Demo checkout — no real order is placed.</p>
     </form>`;
 }
 
@@ -155,7 +150,7 @@ function doneView() {
   const o = placedOrder;
   const payNote = o.payments[0]?.provider === "cod"
     ? "Pay the rider in cash when your order arrives."
-    : "Your payment is pending. Our team will confirm it and update your order status once it's received.";
+    : "This is a demo order. No payment was processed.";
   return dialogHead("Order placed") + `
     <div class="done">
       <div class="done-check" aria-hidden="true">✓</div>
@@ -168,7 +163,7 @@ function doneView() {
         <div class="total"><dt>Total</dt><dd>${money(o.totalCents)}</dd></div>
       </dl>
       <p class="muted small">${payNote}</p>
-      <p class="muted small">Track it any time with <strong>Order status</strong> using your order number and ${esc(o.email)}.</p>
+      <p class="muted small">Track it any time with <strong>Order status</strong> using your order number and email.</p>
       <button class="btn btn-gold btn-block" type="button" data-close>Continue shopping</button>
     </div>`;
 }
@@ -186,20 +181,6 @@ export async function openCart() {
   render();
 }
 
-async function prefillAddress() {
-  if (!state.user) return;
-  try {
-    const a = (await api("GET", "/api/addresses")).addresses[0];
-    const form = dlg.querySelector("#checkout-form");
-    if (!a || !form) return;
-    for (const k of ["recipientName", "phone", "line1", "barangay", "city", "province", "postalCode"]) {
-      if (form.elements[k] && a[k]) form.elements[k].value = a[k];
-    }
-    if (a.region && state.region !== a.region) { await setRegion(a.region); }
-    if (form.elements.saveAddress) form.elements.saveAddress.checked = false;
-  } catch { /* prefill is optional */ }
-}
-
 dlg.addEventListener("click", async (e) => {
   const act = e.target.closest("[data-cart]")?.dataset.cart;
   if (!act || busy) return;
@@ -209,16 +190,13 @@ dlg.addEventListener("click", async (e) => {
     if (act === "inc") await setQty(item.id, item.quantity + 1);
     else if (act === "dec") await (item.quantity <= 1 ? removeItem(item.id) : setQty(item.id, item.quantity - 1));
     else if (act === "remove") await removeItem(item.id);
-    else if (act === "uncoupon") await removeCoupon();
-    else if (act === "checkout") { view = "checkout"; render(); prefillAddress(); }
+    else if (act === "checkout") { view = "checkout"; render(); }
     else if (act === "back") { view = "cart"; render(); }
-    else if (act === "signin") openAccount();
   } catch (err) { showToast(esc(err.message)); }
 });
 
 dlg.addEventListener("change", async (e) => {
   if (e.target.name !== "region") return;
-  // Keep what the shopper typed: only the summary needs updating.
   try {
     await setRegion(e.target.value);
   } catch (err) { showToast(esc(err.message)); }
@@ -226,13 +204,6 @@ dlg.addEventListener("change", async (e) => {
 
 dlg.addEventListener("submit", async (e) => {
   e.preventDefault();
-  if (e.target.id === "coupon-form") {
-    try {
-      await applyCoupon(e.target.elements.code.value.trim());
-      showToast('<span class="gold">✓</span> Coupon applied');
-    } catch (err) { showToast(esc(err.message)); }
-    return;
-  }
   if (e.target.id !== "checkout-form") return;
 
   const f = Object.fromEntries(new FormData(e.target));
@@ -242,15 +213,31 @@ dlg.addEventListener("submit", async (e) => {
   busy = true;
   submit.disabled = true;
   submit.textContent = "Placing order…";
+
   try {
-    const body = { paymentProvider: f.paymentProvider, notes: f.notes || undefined };
-    if (state.user && f.saveAddress) {
-      body.addressId = (await api("POST", "/api/addresses", address)).address.id;
-    } else {
-      body.address = address;
-      if (!state.user) body.email = f.email;
-    }
-    placedOrder = (await api("POST", "/api/checkout", body)).order;
+    const orderNumber = "BZ-" + Date.now().toString(36).toUpperCase();
+    placedOrder = {
+      orderNumber,
+      email: f.email || "guest@demo.local",
+      status: "pending",
+      paymentStatus: "unpaid",
+      placedAt: new Date().toISOString(),
+      items: state.cart.items.map((i) => ({ quantity: i.quantity, productName: i.productName, variantName: i.variantName, lineTotalCents: i.lineTotalCents })),
+      shippingAddress: address,
+      subtotalCents: state.cart.subtotalCents,
+      discountCents: 0,
+      shippingCents: state.cart.shippingCents || 0,
+      taxCents: state.cart.taxCents,
+      totalCents: state.cart.totalCents,
+      payments: [{ provider: f.paymentProvider, amountCents: state.cart.totalCents, status: "pending" }],
+      shipments: [],
+    };
+    const orders = readOrders();
+    orders.push(placedOrder);
+    writeOrders(orders);
+
+    // Clear cart
+    localStorage.removeItem("blitzcrank-cart");
     view = "done";
     await refreshCart();
   } catch (err) {
@@ -282,4 +269,3 @@ on("cart", () => {
   }
   render();
 });
-on("user", () => { if (dlg.open && view === "checkout") { render(); prefillAddress(); } });

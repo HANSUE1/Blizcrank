@@ -203,7 +203,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     document.querySelectorAll("[data-rail], #shop-categories, #hero").forEach((s) => (s.hidden = true));
     const empty = document.getElementById("empty-state");
     empty.querySelector(".empty-title").textContent = "Store is offline";
-    empty.querySelector(".empty-sub").textContent = "Start the server with npm start, then open http://localhost:3000";
+    empty.querySelector(".empty-sub").textContent = "Please refresh the page.";
     document.getElementById("clear-filters").hidden = true;
     empty.hidden = false;
     document.body.classList.remove("is-loading");
