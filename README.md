@@ -9,6 +9,8 @@ cart, wishlist and order history are persisted in `localStorage`.
 Serve the directory with any static file server:
 
 ```bash
+npm run dev
+# or
 npx serve .
 # or
 python -m http.server 8080
