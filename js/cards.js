@@ -33,6 +33,13 @@ function actionButton(p) {
   return `<button class="add-to-cart" type="button" data-action="add">${CART_ICON}<span>${p.isPreorder ? "Pre-order" : "Add to cart"}</span></button>`;
 }
 
+// Up to three facts a shopper can compare without opening the product.
+function keySpecsHTML(p) {
+  if (!p.specs.length) return "";
+  return `<dl class="card-specs">${p.specs.slice(0, 3).map((s) =>
+    `<div><dt>${esc(s.label)}</dt><dd>${esc(s.value)}${s.unit ? " " + esc(s.unit) : ""}</dd></div>`).join("")}</dl>`;
+}
+
 export function cardHTML(p) {
   const wished = !!state.wished[p.slug];
   const badge = p.badgeLabel ? `<span class="card-badge ${esc(p.badge)}">${esc(p.badgeLabel)}</span>` : "";
@@ -51,6 +58,7 @@ export function cardHTML(p) {
         `<p class="card-brand">${esc(p.brand)}</p>` +
         `<h3 class="card-title"><button type="button" data-action="open">${esc(p.name)}</button></h3>` +
         `<div class="card-rating">${starsHTML(p.rating, p.reviewCount)}</div>` +
+        keySpecsHTML(p) +
         release + lowStock +
         `<div class="card-price">${priceHTML(p)}</div>` +
         actionButton(p) +
@@ -104,11 +112,19 @@ export function filterLabel(f) {
   return state.categoryName[f] || f;
 }
 
+// Everything a shopper might type: name, brand, category, description, looks, specs, options.
+function searchText(p) {
+  return [p.name, p.brand, state.categoryName[p.category], p.topCategory, p.description,
+    p.look?.summary, ...(p.look?.details || []).flat(),
+    ...p.specs.flatMap((s) => [s.label, s.value + (s.unit ? " " + s.unit : "")]),
+    ...p.variants.flatMap((v) => [v.name, v.look])].filter(Boolean).join(" ").toLowerCase();
+}
+
 export function visibleProducts() {
   const q = catalog.query.trim().toLowerCase();
   return state.products
     .filter((p) => matchesFilter(p, catalog.filter))
-    .filter((p) => !q || `${p.name} ${p.brand} ${state.categoryName[p.category] || ""} ${p.topCategory}`.toLowerCase().includes(q))
+    .filter((p) => !q || searchText(p).includes(q))
     .sort(SORTS[catalog.sort] || SORTS.featured);
 }
 
@@ -120,8 +136,17 @@ export function renderCatalog() {
 
   const label = filterLabel(catalog.filter);
   const q = catalog.query.trim();
+
+  // A filter or search turns the home page into a results page, so results are never below the fold.
+  const browsing = catalog.filter !== "all" || q !== "";
+  if (document.body.classList.contains("is-browsing") !== browsing) {
+    document.body.classList.toggle("is-browsing", browsing);
+    document.getElementById("catalog").scrollIntoView({ behavior: "instant", block: "start" });
+  }
+  document.getElementById("featured-title").innerHTML = !browsing ? 'Shop all <span class="gold">gear</span>'
+    : q ? `Results for <span class="gold">“${esc(q)}”</span>` : `<span class="gold">${esc(label)}</span>`;
   document.getElementById("catalog-sub").textContent =
-    `${label}${q ? ` · “${q}”` : ""} · ${list.length} product${list.length === 1 ? "" : "s"}`;
+    `${browsing && !q ? "" : label + " · "}${list.length} product${list.length === 1 ? "" : "s"}`;
 
   // Highlight the chip for this filter, or its parent category.
   const parent = state.categories.find((c) => c.children.some((ch) => ch.slug === catalog.filter));

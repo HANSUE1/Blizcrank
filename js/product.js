@@ -19,6 +19,24 @@ function stockText(v) {
   return '<span class="stock is-in">In stock · ships in 1–2 days</span>';
 }
 
+// Outline of the product drawn to scale beside a bank card (85.6 × 54 mm), an object everyone has held.
+function sizeHTML({ size, view }) {
+  if (!size) return "";
+  const [w, h] = size;
+  const [cw, ch] = [85.6, 54];
+  const gap = Math.max(w, cw) * 0.12;
+  const W = w + gap + cw;
+  const H = Math.max(h, ch);
+  const label = `${(w / 10).toFixed(1)} cm wide, ${(h / 10).toFixed(1)} cm tall`;
+  return `<figure class="pd-size">
+      <svg viewBox="0 0 ${W} ${H}" style="max-width:${Math.min(340, 150 * W / H)}px" role="img" aria-label="Outline ${label}, beside a bank card">
+        <rect class="pd-size-item" x="0" y="${H - h}" width="${w}" height="${h}" rx="${Math.min(w, h) * 0.05}"/>
+        <rect class="pd-size-card" x="${w + gap}" y="${H - ch}" width="${cw}" height="${ch}" rx="3.2"/>
+      </svg>
+      <figcaption>${esc(view)}, to scale. Dashed outline is a bank card.</figcaption>
+    </figure>`;
+}
+
 function render() {
   const p = current;
   const v = variant;
@@ -33,12 +51,18 @@ function render() {
       <legend class="field-label">Option: <strong>${esc(v.name)}</strong></legend>
       <div class="chips">${p.variants.map((x) =>
         `<button type="button" class="chip${x.id === v.id ? " is-active" : ""}${x.inStock ? "" : " is-out"}" data-variant="${x.id}"
-           aria-pressed="${x.id === v.id}">${esc(x.name)}${x.inStock ? "" : " · sold out"}</button>`).join("")}</div>
+           aria-pressed="${x.id === v.id}">${x.swatch ? `<span class="swatch" style="background:${esc(x.swatch)}"></span>` : ""}${esc(x.name)}${x.inStock ? "" : " · sold out"}</button>`).join("")}</div>
     </fieldset>` : "";
 
   const specs = p.specs.length ? `
     <table class="specs"><tbody>${p.specs.map((s) =>
       `<tr><th scope="row">${esc(s.label)}</th><td>${esc(s.value)}${s.unit ? " " + esc(s.unit) : ""}</td></tr>`).join("")}</tbody></table>` : "";
+
+  const look = p.look ? `
+    <section class="pd-look" aria-labelledby="pd-look-title"><h3 class="pd-h" id="pd-look-title">What it looks like</h3>
+      <div><p class="pd-look-text">${v.look ? `<strong>${esc(v.name)}.</strong> ${esc(v.look)} ` : ""}${esc(p.look.summary)}</p>${sizeHTML(p.look)}</div>
+      <dl class="pd-facts">${p.look.details.map(([k, val]) => `<div><dt>${esc(k)}</dt><dd>${esc(val)}</dd></div>`).join("")}</dl>
+    </section>` : "";
 
   dlg.innerHTML = `
     <div class="pd">
@@ -48,6 +72,7 @@ function render() {
         <p class="card-brand">${esc(p.brand)}</p>
         <h2 class="pd-title" id="pd-title">${esc(p.name)}</h2>
         <div class="card-rating">${starsHTML(p.rating, p.reviewCount)}</div>
+        <p class="pd-desc">${esc(p.description)}</p>
         <div class="pd-price">${price}</div>
         <p class="pd-vat muted small">VAT included</p>
         ${variants}
@@ -68,12 +93,12 @@ function render() {
           <li>100% brand new &amp; official local warranty</li>
           <li>Cash on delivery, GCash, Maya and cards</li>
         </ul>
-        <p class="pd-desc">${esc(p.description)}</p>
       </div>
+      ${look}
       <div class="pd-more">
         ${specs ? `<section><h3 class="pd-h">Specifications</h3>${specs}</section>` : ""}
-        <section><h3 class="pd-h">Reviews ${p.reviewCount ? `<span class="muted">(${p.reviewCount})</span>` : ""}</h3>
-          <p class="muted">No reviews yet. Be the first.</p></section>
+        <section><h3 class="pd-h">Reviews</h3>
+          <p class="muted">${p.reviewCount ? `Rated ${Number(p.rating).toFixed(1)} out of 5 from ${p.reviewCount} reviews.` : "No reviews yet."}</p></section>
       </div>
     </div>`;
   dlg.setAttribute("aria-labelledby", "pd-title");

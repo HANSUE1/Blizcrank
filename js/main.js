@@ -23,6 +23,7 @@ function followLink(link) {
   if (!link) return false;
   const [key, value] = link.replace(/^#/, "").split("=");
   if (key === "category") showFilter(value || "all");
+  else if (key === "home") { clearFilters(); window.scrollTo({ top: 0, behavior: "instant" }); }
   else if (key === "deals" || key === "preorders") showFilter(key);
   else if (key === "product") openProduct(value);
   else if (key === "order-status") openOrderLookup();
@@ -94,7 +95,7 @@ function updateCounters() {
   const w = wishCount();
   wishBadge.textContent = w;
   wishBadge.hidden = w === 0;
-  document.getElementById("account-label").textContent = state.user ? (state.user.firstName || "Account") : "Sign in";
+  document.getElementById("account-label").textContent = state.user ? (state.user.firstName || "Account") : "Orders";
   document.getElementById("cart-btn").setAttribute("aria-label", `Cart, ${n} item${n === 1 ? "" : "s"}`);
   document.getElementById("wishlist-btn").setAttribute("aria-label", `Wishlist, ${w} item${w === 1 ? "" : "s"}`);
 }
@@ -104,7 +105,7 @@ function updateCounters() {
 function renderWishlist() {
   const items = Object.keys(state.wished).map((s) => state.bySlug[s]).filter(Boolean);
   wishDrawer.innerHTML = dialogHead(`Wishlist <span class="muted">(${items.length})</span>`,
-    state.user ? "Saved to your account." : "Saved on this device. Sign in to keep it everywhere.") +
+    state.user ? "Saved to your account." : "Saved on this device.") +
     (items.length
       ? `<div class="wish-grid">${items.map(cardHTML).join("")}</div>`
       : `<div class="drawer-empty"><p class="empty-title">Nothing saved yet</p>
@@ -144,12 +145,13 @@ document.getElementById("search-form").addEventListener("submit", (e) => {
   document.getElementById("catalog").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-document.getElementById("clear-filters").addEventListener("click", () => {
+function clearFilters() {
   catalog.filter = "all";
   catalog.query = "";
   searchInput.value = "";
   renderCatalog();
-});
+}
+document.getElementById("clear-filters").addEventListener("click", clearFilters);
 
 // Brand chips search by brand.
 document.getElementById("brand-strip").addEventListener("click", (e) => {

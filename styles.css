@@ -18,7 +18,7 @@
 
   --text: #eef2f8;
   --text-muted: #8b96ac;
-  --text-faint: #5d6981;
+  --text-faint: #7f8aa2;
 
   --red: #ef5350;
   --red-badge: #e85a5e;
@@ -44,6 +44,8 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
+
+::selection { background: var(--gold); color: #17110a; }
 
 button { font-family: inherit; cursor: pointer; background: none; border: none; color: inherit; }
 input { font-family: inherit; }
@@ -457,6 +459,7 @@ input { font-family: inherit; }
   font-weight: 800;
   color: var(--cream);
   letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
 }
 
 .price-old {
@@ -1037,6 +1040,12 @@ select, textarea { font-family: inherit; }
 }
 .card:hover .quick-view, .card-open:focus-visible .quick-view { opacity: 1; transform: translate(-50%, 0); }
 
+.card-specs { margin: 0 0 14px; font-size: 0.78rem; line-height: 1.35; }
+.card-specs div { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; }
+.card-specs div + div { border-top: 1px solid var(--card-border); }
+.card-specs dt { color: var(--text-muted); flex-shrink: 0; }
+.card-specs dd { color: var(--text); font-weight: 600; text-align: right; min-width: 0; }
+
 .card-badge.preorder { background: var(--gold); color: #17110a; }
 .card-note { font-size: 0.74rem; font-weight: 600; color: var(--gold-soft); margin: -4px 0 10px; }
 .card-note.is-warn { color: #ffb74d; }
@@ -1060,6 +1069,10 @@ select, textarea { font-family: inherit; }
 .empty-state .btn { margin-top: 18px; }
 .featured { scroll-margin-top: 140px; }
 .featured:focus { outline: none; }
+
+/* Filtering or searching: hide the storefront sections so results come first. */
+.is-browsing :is(.hero, .trust, #shop-categories, [data-rail]) { display: none; }
+.is-browsing .featured { margin-top: 0; }
 
 /* ============================================================
    Newsletter + footer
@@ -1340,7 +1353,30 @@ fieldset { border: 0; margin: 0 0 8px; padding: 0; min-width: 0; }
 .wish-big.is-wished svg path { fill: currentColor; }
 .pd-perks { list-style: none; display: grid; gap: 6px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 16px; }
 .pd-perks li::before { content: "✓"; color: var(--gold); margin-right: 8px; font-weight: 800; }
-.pd-desc { font-size: 0.9rem; line-height: 1.65; color: #c3cad8; }
+.pd-desc { font-size: 0.94rem; line-height: 1.65; color: #c3cad8; }
+.swatch { display: inline-block; width: 14px; height: 14px; margin-right: 8px; border-radius: 50%; border: 1px solid var(--text-faint); vertical-align: -2px; }
+.pd-look {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 32px;
+  padding: 28px;
+  border-top: 1px solid var(--card-border);
+  background: var(--card);
+}
+.pd-look .pd-h { grid-column: 1 / -1; }
+.pd-look-text { font-size: 1.08rem; line-height: 1.6; max-width: 65ch; text-wrap: pretty; }
+.pd-size { margin-top: 20px; }
+.pd-size svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pd-size rect { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.pd-size-item { stroke: var(--gold); }
+.pd-size .pd-size-item { fill: rgba(224, 169, 63, 0.08); }
+.pd-size-card { stroke: var(--text-muted); stroke-dasharray: 4 4; }
+.pd-size figcaption { margin-top: 10px; font-size: 0.8rem; color: var(--text-muted); }
+.pd-facts { font-size: 0.86rem; }
+.pd-facts div { display: grid; grid-template-columns: 38% 1fr; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--card-border); }
+.pd-facts div:first-child { padding-top: 2px; }
+.pd-facts dt { color: var(--text-muted); }
 .pd-more {
   grid-column: 1 / -1;
   display: grid;
@@ -1583,7 +1619,10 @@ main .page, .hero, .trust { transition: opacity 0.3s; }
   .rail { grid-auto-columns: calc((100% - 22px) / 2); }
   .pd { grid-template-columns: 1fr; }
   .pd-media { min-height: 260px; border-right: 0; border-bottom: 1px solid var(--card-border); }
-  .pd-more { grid-template-columns: 1fr; }
+  .pd-more, .pd-look { grid-template-columns: 1fr; }
+  .pd-look > div { margin-bottom: 16px; }
+  /* Keep the buy controls in reach while the details scroll. */
+  .pd-buy { position: sticky; bottom: 0; z-index: 3; padding: 12px 0; margin-bottom: 8px; background: var(--bg-elevated); }
   /* Mega menus need hover; on touch the top-level links filter the catalog
      and the category tiles cover subcategories. */
   .mega, .caret { display: none; }
@@ -1599,9 +1638,8 @@ main .page, .hero, .trust { transition: opacity 0.3s; }
   .hero-track { min-height: 400px; }
   .hero-slide { padding: 30px 22px 72px; }
   .trust { padding: 0 16px; }
-  .trust-inner { grid-template-columns: 1fr; }
-  .trust-inner li { border-left: 0 !important; }
-  .trust-inner li + li { border-top: 1px solid var(--card-border); }
+  .trust-inner li { gap: 10px; padding: 12px; font-size: 0.75rem; }
+  .trust-inner svg { width: 22px; height: 22px; }
   .section { margin-top: 44px; }
   .section-head { flex-wrap: wrap; }
   .rail-arrow { display: none; }
@@ -1628,7 +1666,7 @@ main .page, .hero, .trust { transition: opacity 0.3s; }
   .modal { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
   .modal-wide { width: calc(100vw - 16px); }
   .pd-info { padding: 22px 18px; }
-  .pd-more { padding: 20px 18px 24px; }
+  .pd-more, .pd-look { padding: 20px 18px 24px; }
   .dlg-head, .lines, .drawer-foot, .checkout, .info-body, .auth-form { padding-left: 16px; padding-right: 16px; }
   .tabs { padding: 14px 16px 0; }
 }
