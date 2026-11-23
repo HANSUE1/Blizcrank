@@ -1,7 +1,9 @@
 // Shared helpers: formatting, escaping, toast, dialogs.
 // (No API — this is a frontend-only static app.)
 
-export const money = (cents) => "₱" + (cents / 100).toLocaleString("en-PH", { maximumFractionDigits: 2 });
+// Centavos -> Philippine pesos: 14999500 -> "₱149,995", 3642 -> "₱36.42".
+const PHP = new Intl.NumberFormat("en-PH", { style: "currency", currency: "PHP", trailingZeroDisplay: "stripIfInteger" });
+export const money = (cents) => PHP.format(cents / 100);
 
 // Anything from the database goes through esc() before it touches innerHTML.
 export function esc(s) {

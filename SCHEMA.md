@@ -444,7 +444,7 @@ The seed is idempotent: it clears `products`, `categories`, `brands`, `banners` 
 
 1. **No frontend connections** — this layer is pure data. Controllers/services would sit between this schema and any API.
 2. **Embedded vs referenced** — variants/specs/images are embedded in `products` (read together, small cardinality). `reviews` is separate (unbounded growth, moderated independently). Order `payments`/`shipments` and the shipping address are embedded in `orders` so each order is a complete, immutable snapshot.
-3. **Money** — stored as integer `cents` (e.g. `149995` = ₱1,499.95), matching the existing frontend code. No floating point for currency.
+3. **Money** — stored as integer centavos of the Philippine peso (PHP) in the `*Cents` fields (e.g. `14999500` = ₱149,995.00), matching the existing frontend code. No floating point for currency.
 4. **SKU uniqueness** — enforced across products via a unique partial index on `variants.sku` and by a pre-save hook for duplicates within one product.
 5. **Guest checkout** — `orders.userId` and `carts.userId` are nullable to support guest purchases (current frontend behavior).
 6. **Cart TTL** — `carts.expiresAt` uses a MongoDB TTL index to automatically purge abandoned guest carts.
