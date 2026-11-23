@@ -11,6 +11,7 @@ setupDialog(dlg);
 let current = null;
 let variant = null;
 let qty = 1;
+let shot = 0;
 
 function stockText(v) {
   if (!v.inStock) return '<span class="stock is-out">Sold out</span>';
@@ -34,6 +35,31 @@ function sizeHTML({ size, view }) {
         <rect class="pd-size-card" x="${w + gap}" y="${H - ch}" width="${cw}" height="${ch}" rx="3.2"/>
       </svg>
       <figcaption>${esc(view)}, to scale. Dashed outline is a bank card.</figcaption>
+    </figure>`;
+}
+
+function creditHTML(s) {
+  const size = `${s.width} × ${s.height} px`;
+  const note = s.note ? `${esc(s.note)} ` : "";
+  const c = s.credit;
+  const by = `<a href="${esc(c.page)}" target="_blank" rel="noopener">${esc(c.name)}</a>`;
+  return c.license
+    ? `${note}Photo: ${by}, <a href="${esc(c.licenseUrl)}" target="_blank" rel="noopener">${esc(c.license)}</a>. Original ${size}.`
+    : `${note}Official image: ${by}. ${size}.`;
+}
+
+// Photo gallery for the chosen option; line art when that option has no photo.
+function galleryHTML(p, v) {
+  const shots = p.images.filter((i) => !i.variantId || i.variantId === v.id);
+  const s = shots[shot];
+  if (!s) return mediaHTML(p, null) + (p.images.length ? `<p class="pd-nophoto">No photo of ${esc(v.name)} yet.</p>` : "");
+  const thumbs = shots.length > 1 ? `<div class="pd-thumbs">${shots.map((x, i) =>
+    `<button type="button" class="pd-thumb${x.dark ? " is-dark" : ""}" data-shot="${i}" aria-pressed="${i === shot}" aria-label="Photo ${i + 1}: ${esc(x.alt)}"><img src="${esc(x.thumb)}" alt="" /></button>`).join("")}</div>` : "";
+  return `<figure class="pd-figure">
+      <a class="media-bg is-photo${s.dark ? " is-dark" : ""}" href="${esc(s.full)}" target="_blank" rel="noopener" aria-label="Open full-size image: ${esc(s.alt)}">
+        <img class="product-art" src="${esc(s.url)}" alt="${esc(s.alt)}" /></a>
+      ${thumbs}
+      <figcaption>${creditHTML(s)}</figcaption>
     </figure>`;
 }
 
@@ -67,7 +93,7 @@ function render() {
   dlg.innerHTML = `
     <div class="pd">
       <button class="icon-btn pd-close" type="button" data-close aria-label="Close">${closeIcon}</button>
-      <div class="pd-media">${mediaHTML(p)}${p.badgeLabel ? `<span class="card-badge ${esc(p.badge)}">${esc(p.badgeLabel)}</span>` : ""}</div>
+      <div class="pd-media">${galleryHTML(p, v)}${p.badgeLabel ? `<span class="card-badge ${esc(p.badge)}">${esc(p.badgeLabel)}</span>` : ""}</div>
       <div class="pd-info">
         <p class="card-brand">${esc(p.brand)}</p>
         <h2 class="pd-title" id="pd-title">${esc(p.name)}</h2>
@@ -115,13 +141,22 @@ export async function openProduct(slug) {
   current = p;
   variant = p.variants.find((v) => v.inStock) || p.variants[0];
   qty = 1;
+  shot = 0;
   render();
 }
 
 dlg.addEventListener("click", async (e) => {
   if (!current) return;
+  const sBtn = e.target.closest("[data-shot]");
+  if (sBtn) {
+    shot = Number(sBtn.dataset.shot);
+    render();
+    dlg.querySelector(`[data-shot="${shot}"]`).focus();
+    return;
+  }
   const vBtn = e.target.closest("[data-variant]");
   if (vBtn) {
+    shot = 0;
     variant = current.variants.find((v) => v.id === Number(vBtn.dataset.variant));
     qty = Math.min(qty, Math.max(1, variant.stock));
     return render();

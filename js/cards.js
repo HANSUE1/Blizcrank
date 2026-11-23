@@ -9,11 +9,12 @@ const CART_ICON =
 const HEART_ICON =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3 4.9 13A4.8 4.8 0 0 1 12 6.4 4.8 4.8 0 0 1 19.1 13Z"/></svg>';
 
-export function mediaHTML(p) {
-  const inner = p.imageUrl
-    ? `<img class="product-art" src="${esc(p.imageUrl)}" alt="" loading="lazy" />`
-    : art(p.card.art, esc(p.card.color));
-  return `<div class="media-bg" style="background:${esc(p.card.bg || "#141c30")}">${inner}</div>`;
+// Photo when there is one, otherwise line art. Pass null to force line art.
+export function mediaHTML(p, imageUrl = p.imageUrl) {
+  if (imageUrl) {
+    return `<div class="media-bg is-photo${p.images[0]?.dark ? " is-dark" : ""}"><img class="product-art" src="${esc(imageUrl)}" alt="" loading="lazy" /></div>`;
+  }
+  return `<div class="media-bg" style="background:${esc(p.card.bg || "#141c30")}">${art(p.card.art, esc(p.card.color))}</div>`;
 }
 
 export function priceHTML(p) {

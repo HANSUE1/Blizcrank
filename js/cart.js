@@ -72,7 +72,7 @@ function cartView() {
       : !i.inStock ? (i.stock > 0 ? `Only ${i.stock} left, lower the quantity` : "Sold out, please remove") : "";
     return `
       <li class="line" data-item="${i.id}">
-        <div class="line-art" style="background:${esc(i.card.bg || "#141c30")}">${art(i.card.art, esc(i.card.color))}</div>
+        <div class="line-art" style="background:${i.imageUrl ? "#fff" : esc(i.card.bg || "#141c30")}">${i.imageUrl ? `<img src="${esc(i.imageUrl)}" alt="" />` : art(i.card.art, esc(i.card.color))}</div>
         <div class="line-info">
           <p class="line-name">${esc(i.productName)}</p>
           ${i.variantName !== "Standard" ? `<p class="muted small">${esc(i.variantName)}</p>` : ""}

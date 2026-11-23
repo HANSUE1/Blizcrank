@@ -7,12 +7,14 @@
       "badge": "hot", "badgeLabel": "Hot", "isPreorder": false, "releaseDate": null,
       "priceCents": 149995, "compareAtCents": 169995, "fromPriceCents": 149995, "variantCount": 1,
       "createdAt": "2025-01-01T00:00:00Z", "rating": 4.9, "reviewCount": 312,
-      "stock": 8, "inStock": true, "defaultVariantId": 1, "imageUrl": null,
+      "stock": 8, "inStock": true, "defaultVariantId": 1, "imageUrl": "images/thumbs/rog-strix-scar-16-1.webp",
       "card": {"art": "laptop", "color": "#8fa7d4", "bg": "linear-gradient(140deg,#2a3550 0%,#141c30 55%,#0d1322 100%)"},
       "variants": [{"id": 1, "sku": "ASU-SCAR16-5080", "name": "Standard", "options": {}, "priceCents": 149995, "compareAtCents": 169995, "isDefault": true, "stock": 8, "inStock": true}],
       "specs": [{"key":"gpu","label":"GPU","value":"RTX 5080","unit":null},{"key":"screen_size_in","label":"Screen size","value":"16","unit":"in"},{"key":"refresh_rate_hz","label":"Refresh rate","value":"240","unit":"Hz"},{"key":"panel","label":"Panel","value":"OLED","unit":null},{"key":"ram_gb","label":"Memory","value":"32","unit":"GB"},{"key":"storage_gb","label":"Storage","value":"2000","unit":"GB"}],
       "look": {"summary": "An off-black 16-inch slab of a laptop, 35.4 cm wide and between 2.28 and 3.08 cm thick. The full keyboard, with a number pad, lights up key by key in RGB, joined by an Aura Sync logo, a light bar and an AniMe Vision display.", "details": [["Colour", "Off black"], ["Size", "35.4 × 26.8 × 2.28–3.08 cm"], ["Weight", "2.80 kg"], ["Screen face", "16-inch, 2560 × 1600, anti-glare"], ["Ports", "2 × Thunderbolt 5, 3 × USB-A, HDMI 2.1, 2.5G LAN, 3.5 mm audio"]], "size": [354, 268], "view": "Seen from above, closed", "sources": ["https://ecommerce.datablitz.com.ph/products/asus-rog-strix-scar-16-g635lw-rw118wsm-gaming-laptop-16-2-5k-2560x1600-mini-led-240hz-core-ultra-9-275hx-32gb-ram-2tb-ssd-rtx-5080-windows-11-home-ms-office-home-2024-ms-365-basic-rog-backpack-gladius-iii-mouse-p514-pd-adapter", "https://rog.asus.com/laptops/rog-strix/rog-strix-scar-16-2025/spec/"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/rog-strix-scar-16-1.webp", "thumb": "images/thumbs/rog-strix-scar-16-1.webp", "alt": "Lid half open from behind, with lit dot-matrix lettering and light bar", "isPrimary": true, "sortOrder": 0, "full": "images/maker/rog-strix-scar-16-1.webp", "width": 3200, "height": 1800, "credit": {"name": "ASUS", "page": "https://rog.asus.com/laptops/rog-strix/rog-strix-scar-16-2025/"}, "dark": true}
+      ],
       "reviews": []
     },
     {
@@ -40,11 +42,14 @@
       "badge": "hot", "badgeLabel": "Hot", "isPreorder": false, "releaseDate": null,
       "priceCents": 32995, "compareAtCents": null, "fromPriceCents": 32995, "variantCount": 1,
       "createdAt": "2025-01-03T00:00:00Z", "rating": 4.8, "reviewCount": 96,
-      "stock": 28, "inStock": true, "defaultVariantId": 4, "imageUrl": null,
+      "stock": 28, "inStock": true, "defaultVariantId": 4, "imageUrl": "images/thumbs/pny-rtx-5060-ti-1.webp",
       "card": {"art": "gpu", "color": "#9fb2cf", "bg": "linear-gradient(140deg,#39425a 0%,#1a2032 55%,#0e1320 100%)"},
       "variants": [{"id": 4, "sku": "PNY-5060TI-16G", "name": "Standard", "options": {}, "priceCents": 32995, "compareAtCents": null, "isDefault": true, "stock": 28, "inStock": true}],
       "specs": [{"key":"vram_gb","label":"VRAM","value":"16","unit":"GB"},{"key":"interface","label":"Interface","value":"PCIe 5.0 x8","unit":null},{"key":"tdp_w","label":"Board power","value":"180","unit":"W"},{"key":"psu_min_w","label":"Recommended PSU","value":"550","unit":"W"}],
-      "images": [],
+      "images": [
+        {"url": "images/photos/pny-rtx-5060-ti-1.jpg", "thumb": "images/thumbs/pny-rtx-5060-ti-1.webp", "alt": "Front: dark shroud with two fans", "isPrimary": true, "sortOrder": 0, "full": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Nvidia_GeForce_RTX_5060_Ti_16GB%2C_PNY_Overclocked_Dual_Fan%2C_front.jpg", "width": 6000, "height": 4000, "credit": {"name": "FreeMediaKid!", "page": "https://commons.wikimedia.org/wiki/File:Nvidia_GeForce_RTX_5060_Ti_16GB,_PNY_Overclocked_Dual_Fan,_front.jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}},
+        {"url": "images/photos/pny-rtx-5060-ti-2.jpg", "thumb": "images/thumbs/pny-rtx-5060-ti-2.webp", "alt": "Back: dark backplate with PNY and GeForce RTX 5060 Ti lettering", "isPrimary": false, "sortOrder": 1, "full": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Nvidia_GeForce_RTX_5060_Ti_16GB%2C_PNY_Overclocked_Dual_Fan%2C_rear.jpg", "width": 6000, "height": 4000, "credit": {"name": "FreeMediaKid!", "page": "https://commons.wikimedia.org/wiki/File:Nvidia_GeForce_RTX_5060_Ti_16GB,_PNY_Overclocked_Dual_Fan,_rear.jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}}
+      ],
       "reviews": []
     },
     {
@@ -54,11 +59,13 @@
       "badge": "sale", "badgeLabel": "-14% Off", "isPreorder": false, "releaseDate": null,
       "priceCents": 24995, "compareAtCents": 28995, "fromPriceCents": 24995, "variantCount": 1,
       "createdAt": "2025-01-04T00:00:00Z", "rating": 4.9, "reviewCount": 240,
-      "stock": 4, "inStock": true, "defaultVariantId": 5, "imageUrl": null,
+      "stock": 4, "inStock": true, "defaultVariantId": 5, "imageUrl": "images/thumbs/amd-ryzen-9-7900x-1.webp",
       "card": {"art": "cpu", "color": "#86c79b", "bg": "linear-gradient(140deg,#1f4536 0%,#122a21 55%,#0a1712 100%)"},
       "variants": [{"id": 5, "sku": "AMD-R9-7900X", "name": "Boxed", "options": {}, "priceCents": 24995, "compareAtCents": 28995, "isDefault": true, "stock": 4, "inStock": true}],
       "specs": [{"key":"socket","label":"Socket","value":"AM5","unit":null},{"key":"cores","label":"Cores","value":"12","unit":null},{"key":"threads","label":"Threads","value":"24","unit":null},{"key":"boost_ghz","label":"Max boost","value":"5.6","unit":"GHz"},{"key":"tdp_w","label":"TDP","value":"170","unit":"W"},{"key":"memory_type","label":"Memory type","value":"DDR5","unit":null}],
-      "images": [],
+      "images": [
+        {"url": "images/photos/amd-ryzen-9-7900x-1.jpg", "thumb": "images/thumbs/amd-ryzen-9-7900x-1.webp", "alt": "Top of the processor: notched metal heat spreader marked AMD Ryzen 9 7900X", "isPrimary": true, "sortOrder": 0, "full": "https://upload.wikimedia.org/wikipedia/commons/a/a3/AMD_Ryzen_9_7900X.jpg", "width": 3068, "height": 3068, "credit": {"name": "CristoCalis", "page": "https://commons.wikimedia.org/wiki/File:AMD_Ryzen_9_7900X.jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}}
+      ],
       "reviews": []
     },
     {
@@ -68,7 +75,7 @@
       "badge": "new", "badgeLabel": "New", "isPreorder": false, "releaseDate": null,
       "priceCents": 11995, "compareAtCents": null, "fromPriceCents": 11995, "variantCount": 2,
       "createdAt": "2025-01-05T00:00:00Z", "rating": 4.8, "reviewCount": 154,
-      "stock": 25, "inStock": true, "defaultVariantId": 6, "imageUrl": null,
+      "stock": 25, "inStock": true, "defaultVariantId": 6, "imageUrl": "images/thumbs/razer-blackwidow-v4-1.webp",
       "card": {"art": "keyboard", "color": "#b48fd4", "bg": "linear-gradient(140deg,#3a2a52 0%,#1e1530 55%,#110b1d 100%)"},
       "variants": [
         {"id": 6, "sku": "RZR-BWV4P-GRN", "name": "Green (Clicky)", "options": {"switch":"Green"}, "priceCents": 11995, "compareAtCents": null, "isDefault": true, "stock": 21, "inStock": true},
@@ -76,7 +83,10 @@
       ],
       "specs": [{"key":"layout","label":"Layout","value":"Full size","unit":null},{"key":"connection","label":"Connection","value":"Wired USB-C","unit":null},{"key":"polling_rate_hz","label":"Polling rate","value":"8000","unit":"Hz"}],
       "look": {"summary": "A full-size board with a textured aluminium command dial, five macro keys on the left and three more buttons along the left edge. A roller and four media keys sit at the top right. Light spills from two sides of the chassis and three sides of the plush leatherette wrist rest, which attaches magnetically.", "details": [["Dial", "All-aluminium, textured sides, 30 steps per turn"], ["Keycaps", "Doubleshot ABS, extra-thick walls"], ["Lighting", "Per-key RGB, 2-side chassis glow, 3-side wrist-rest glow"], ["Wrist rest", "Magnetic, plush leatherette"]], "sources": ["https://ecommerce.datablitz.com.ph/products/razer-blackwidow-v4-pro-mechanical-gaming-keyboard-with-razer-chroma-rgb-yellow-switch", "https://www.razer.com/gaming-keyboards/razer-blackwidow-v4-pro"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/razer-blackwidow-v4-1.webp", "thumb": "images/thumbs/razer-blackwidow-v4-1.webp", "alt": "Keyboard with wrist rest and full RGB lighting", "isPrimary": true, "sortOrder": 0, "full": "images/maker/razer-blackwidow-v4-1.webp", "width": 1920, "height": 700, "credit": {"name": "Razer", "page": "https://www.razer.com/gaming-keyboards/razer-blackwidow-v4-pro"}, "dark": true},
+        {"url": "images/maker/razer-blackwidow-v4-2.webp", "thumb": "images/thumbs/razer-blackwidow-v4-2.webp", "alt": "Close view of the wrist rest and lower keys", "isPrimary": false, "sortOrder": 1, "full": "images/maker/razer-blackwidow-v4-2.webp", "width": 1920, "height": 700, "credit": {"name": "Razer", "page": "https://www.razer.com/gaming-keyboards/razer-blackwidow-v4-pro"}, "dark": true}
+      ],
       "reviews": []
     },
     {
@@ -86,12 +96,16 @@
       "badge": "sale", "badgeLabel": "-15% Off", "isPreorder": false, "releaseDate": null,
       "priceCents": 5495, "compareAtCents": 6495, "fromPriceCents": 5495, "variantCount": 1,
       "createdAt": "2025-01-06T00:00:00Z", "rating": 4.7, "reviewCount": 421,
-      "stock": 40, "inStock": true, "defaultVariantId": 8, "imageUrl": null,
+      "stock": 40, "inStock": true, "defaultVariantId": 8, "imageUrl": "images/thumbs/logitech-g903-1.webp",
       "card": {"art": "mouse", "color": "#9ccbe0", "bg": "linear-gradient(140deg,#2b4252 0%,#152430 55%,#0c141c 100%)"},
       "variants": [{"id": 8, "sku": "LOG-G903-BLK", "name": "Black", "options": {"color":"Black"}, "priceCents": 5495, "compareAtCents": 6495, "isDefault": true, "stock": 40, "inStock": true}],
       "specs": [{"key":"dpi","label":"Max DPI","value":"25600","unit":null},{"key":"connection","label":"Connection","value":"Lightspeed wireless","unit":null},{"key":"weight_g","label":"Weight","value":"110","unit":"g"}],
       "look": {"summary": "A black mouse with an ambidextrous build that suits palm, claw and fingertip grips. It is 13 cm long and 6.7 cm wide, with two RGB lighting zones and a hyper-fast scroll wheel.", "details": [["Colour", "Black"], ["Size", "13.0 × 6.7 × 4.0 cm"], ["Weight", "110 g, plus an optional 10 g weight"], ["Lighting", "LIGHTSYNC RGB, 2 zones"], ["Cable", "1.8 m"]], "size": [66.5, 130.3], "view": "Seen from above", "sources": ["https://ecommerce.datablitz.com.ph/products/logitech-g903-lightspeed-hero-wireless-gaming-mouse", "https://www.logitechg.com/en-us/products/gaming-mice/g903-hero-wireless-gaming-mouse.html"]},
-      "images": [],
+      "images": [
+        {"url": "images/photos/logitech-g903-1.jpg", "thumb": "images/thumbs/logitech-g903-1.webp", "alt": "Black mouse from above at an angle, with lit blue G logo and its USB receiver", "isPrimary": true, "sortOrder": 0, "full": "https://upload.wikimedia.org/wikipedia/commons/7/71/2023_Mysz_komputerowa_Logitech_G903_Lightspeed.jpg", "width": 4382, "height": 3020, "credit": {"name": "Jacek Halicki", "page": "https://commons.wikimedia.org/wiki/File:2023_Mysz_komputerowa_Logitech_G903_Lightspeed.jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}},
+        {"url": "images/maker/logitech-g903-2.png", "thumb": "images/thumbs/logitech-g903-2.webp", "alt": "Seen from directly above", "isPrimary": false, "sortOrder": 1, "full": "images/maker/logitech-g903-2.png", "width": 544, "height": 466, "credit": {"name": "Logitech", "page": "https://www.logitechg.com/en-us/products/gaming-mice/g903-hero-wireless-gaming-mouse.html"}},
+        {"url": "images/maker/logitech-g903-3.png", "thumb": "images/thumbs/logitech-g903-3.webp", "alt": "Left side", "isPrimary": false, "sortOrder": 2, "full": "images/maker/logitech-g903-3.png", "width": 544, "height": 466, "credit": {"name": "Logitech", "page": "https://www.logitechg.com/en-us/products/gaming-mice/g903-hero-wireless-gaming-mouse.html"}}
+      ],
       "reviews": []
     },
     {
@@ -101,7 +115,7 @@
       "badge": "new", "badgeLabel": "New", "isPreorder": false, "releaseDate": null,
       "priceCents": 9995, "compareAtCents": null, "fromPriceCents": 9995, "variantCount": 2,
       "createdAt": "2025-01-07T00:00:00Z", "rating": 4.6, "reviewCount": 87,
-      "stock": 15, "inStock": true, "defaultVariantId": 9, "imageUrl": null,
+      "stock": 15, "inStock": true, "defaultVariantId": 9, "imageUrl": "images/thumbs/razer-kraken-v4-1.webp",
       "card": {"art": "headset", "color": "#7fd0a8", "bg": "linear-gradient(140deg,#15383a 0%,#0e2426 55%,#081416 100%)"},
       "variants": [
         {"id": 9, "sku": "RZR-KRV4P-BLK", "name": "Black", "options": {"color":"Black"}, "priceCents": 9995, "compareAtCents": null, "isDefault": true, "stock": 13, "inStock": true},
@@ -109,7 +123,10 @@
       ],
       "specs": [{"key":"connection","label":"Connection","value":"2.4GHz / Bluetooth","unit":null},{"key":"driver_mm","label":"Drivers","value":"40","unit":"mm"},{"key":"battery_h","label":"Battery","value":"70","unit":"h"}],
       "look": {"summary": "Oval ear cushions in leatherette over memory foam, with nine RGB lighting zones on the earcups. The microphone rides on a flexible gooseneck and tucks away into the earcup. A separate desktop hub carries an OLED screen and a clickable knob.", "details": [["Weight", "397 g, not counting the hub"], ["Cushions", "Oval, leatherette and memory foam"], ["Lighting", "9-zone earcup RGB"], ["Microphone", "Retractable gooseneck with mute indicator"], ["Hub", "OLED display, clickable knob, 3.5 mm port"]], "sources": ["https://ecommerce.datablitz.com.ph/products/razer-kraken-v4-pro-wireless-gaming-headset-with-oled-control-hub-pc-mac-playstation-nintendo-switch-steam-deck-smartphone", "https://www.razer.com/gaming-headsets/razer-kraken-v4-pro"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/razer-kraken-v4-1.webp", "thumb": "images/thumbs/razer-kraken-v4-1.webp", "alt": "Headset from the side with lit earcup and microphone extended", "isPrimary": true, "sortOrder": 0, "full": "images/maker/razer-kraken-v4-1.webp", "width": 500, "height": 500, "credit": {"name": "Razer", "page": "https://www.razer.com/gaming-headsets/razer-kraken-v4-pro"}},
+        {"url": "images/maker/razer-kraken-v4-2.webp", "thumb": "images/thumbs/razer-kraken-v4-2.webp", "alt": "Ear cushions and headband up close", "isPrimary": false, "sortOrder": 1, "full": "images/maker/razer-kraken-v4-2.webp", "width": 1920, "height": 850, "credit": {"name": "Razer", "page": "https://www.razer.com/gaming-headsets/razer-kraken-v4-pro"}, "dark": true}
+      ],
       "reviews": []
     },
     {
@@ -119,12 +136,15 @@
       "badge": "sale", "badgeLabel": "-15% Off", "isPreorder": false, "releaseDate": null,
       "priceCents": 21995, "compareAtCents": 25995, "fromPriceCents": 21995, "variantCount": 1,
       "createdAt": "2025-01-08T00:00:00Z", "rating": 4.8, "reviewCount": 133,
-      "stock": 6, "inStock": true, "defaultVariantId": 11, "imageUrl": null,
+      "stock": 6, "inStock": true, "defaultVariantId": 11, "imageUrl": "images/thumbs/rog-strix-xg32vqr-1.webp",
       "card": {"art": "monitor", "color": "#e0b670", "bg": "linear-gradient(140deg,#5a4426 0%,#2e2213 55%,#18120a 100%)"},
       "variants": [{"id": 11, "sku": "ASU-XG32VQR", "name": "Standard", "options": {}, "priceCents": 21995, "compareAtCents": 25995, "isDefault": true, "stock": 6, "inStock": true}],
       "specs": [{"key":"screen_size_in","label":"Screen size","value":"31.5","unit":"in"},{"key":"resolution","label":"Resolution","value":"2560×1440","unit":null},{"key":"refresh_rate_hz","label":"Refresh rate","value":"165","unit":"Hz"},{"key":"panel","label":"Panel","value":"VA, curved","unit":null}],
       "look": {"summary": "A wide 31.5-inch anti-glare screen with an 1800R curve, 71 cm across and 59 cm tall on its stand. The stand turns, tilts and slides 10 cm in height, and the box includes acrylic covers for its Aura Sync light.", "details": [["Size with stand", "71.3 × 59.0 × 29.6 cm"], ["Size without stand", "71.3 × 42.6 × 11.1 cm"], ["Weight", "9.6 kg with stand, 5.9 kg without"], ["Stand", "Tilt +20° to −5°, swivel ±50°, height 0–100 mm"], ["Ports", "DisplayPort, 2 × HDMI, 2 × USB-A hub, earphone jack"]], "size": [713.4, 425.7], "view": "Screen seen from the front, without its stand", "sources": ["https://rog.asus.com/monitors/27-to-31-5-inches/rog-strix-xg32vqr-model/spec/"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/rog-strix-xg32vqr-1.jpg", "thumb": "images/thumbs/rog-strix-xg32vqr-1.webp", "alt": "Curved monitor on its stand, front at an angle", "isPrimary": true, "sortOrder": 0, "full": "images/maker/rog-strix-xg32vqr-1.jpg", "width": 1920, "height": 1213, "credit": {"name": "ASUS", "page": "https://rog.asus.com/monitors/27-to-31-5-inches/rog-strix-xg32vqr-model/"}, "dark": true},
+        {"url": "images/maker/rog-strix-xg32vqr-2.jpg", "thumb": "images/thumbs/rog-strix-xg32vqr-2.webp", "alt": "Back with light ring and stand", "isPrimary": false, "sortOrder": 1, "full": "images/maker/rog-strix-xg32vqr-2.jpg", "width": 960, "height": 940, "credit": {"name": "ASUS", "page": "https://rog.asus.com/monitors/27-to-31-5-inches/rog-strix-xg32vqr-model/"}, "dark": true}
+      ],
       "reviews": []
     },
     {
@@ -134,11 +154,13 @@
       "badge": "hot", "badgeLabel": "Hot", "isPreorder": false, "releaseDate": null,
       "priceCents": 43995, "compareAtCents": null, "fromPriceCents": 43995, "variantCount": 1,
       "createdAt": "2025-01-09T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 11, "inStock": true, "defaultVariantId": 12, "imageUrl": null,
+      "stock": 11, "inStock": true, "defaultVariantId": 12, "imageUrl": "images/thumbs/sony-ps5-pro-1.webp",
       "card": {"art": "console", "color": "#c9d4ea", "bg": "linear-gradient(140deg,#25324d 0%,#121a2e 55%,#0a1020 100%)"},
       "variants": [{"id": 12, "sku": "SNY-PS5PRO-2TB", "name": "Standard", "options": {}, "priceCents": 43995, "compareAtCents": null, "isDefault": true, "stock": 11, "inStock": true}],
       "specs": [{"key":"storage_gb","label":"Storage","value":"2000","unit":"GB"},{"key":"output","label":"Video output","value":"4K 120Hz / 8K","unit":null},{"key":"disc_drive","label":"Disc drive","value":"Sold separately","unit":null}],
-      "images": [],
+      "images": [
+        {"url": "images/photos/sony-ps5-pro-1.jpg", "thumb": "images/thumbs/sony-ps5-pro-1.webp", "alt": "White console standing upright with black stripes across the middle, no disc drive", "isPrimary": true, "sortOrder": 0, "full": "https://upload.wikimedia.org/wikipedia/commons/8/82/PlayStation_5_Pro_no_disc_drive.jpg", "width": 1536, "height": 2160, "credit": {"name": "BeatEmUps", "page": "https://commons.wikimedia.org/wiki/File:PlayStation_5_Pro_no_disc_drive.jpg", "license": "CC BY 3.0", "licenseUrl": "https://creativecommons.org/licenses/by/3.0"}}
+      ],
       "reviews": []
     },
     {
@@ -148,7 +170,7 @@
       "badge": "new", "badgeLabel": "New", "isPreorder": false, "releaseDate": null,
       "priceCents": 27995, "compareAtCents": null, "fromPriceCents": 27995, "variantCount": 2,
       "createdAt": "2025-01-10T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 28, "inStock": true, "defaultVariantId": 13, "imageUrl": null,
+      "stock": 28, "inStock": true, "defaultVariantId": 13, "imageUrl": "images/thumbs/nintendo-switch-2-1.webp",
       "card": {"art": "handheld", "color": "#ef8a8a", "bg": "linear-gradient(140deg,#4a2226 0%,#261215 55%,#150a0c 100%)"},
       "variants": [
         {"id": 13, "sku": "NIN-SW2-STD", "name": "Standard", "options": {}, "priceCents": 27995, "compareAtCents": null, "isDefault": true, "stock": 20, "inStock": true},
@@ -156,7 +178,11 @@
       ],
       "specs": [{"key":"screen_size_in","label":"Screen size","value":"7.9","unit":"in"},{"key":"resolution","label":"Resolution","value":"1920×1080","unit":null},{"key":"refresh_rate_hz","label":"Refresh rate","value":"120","unit":"Hz"},{"key":"storage_gb","label":"Storage","value":"256","unit":"GB"}],
       "look": {"summary": "About 27 cm across with a Joy-Con 2 attached to each side of its 7.9-inch touch screen. The body is 1.4 cm thick, rising to about 3 cm where the sticks and ZL/ZR buttons stand out.", "details": [["Size with Joy-Con 2", "11.4 × 27.2 × 1.4 cm"], ["Weight", "About 535 g with Joy-Con 2, 400 g without"], ["Screen", "7.9-inch wide-colour LCD, HDR10, VRR up to 120 Hz"], ["Ports", "USB-C on top, USB-C on the bottom, 3.5 mm audio"], ["Dock", "11.4 × 20.1 × 5.1 cm, two USB ports on the side"]], "size": [272, 114], "view": "Seen from the front, Joy-Con 2 attached", "sources": ["https://www.nintendo.com/us/gaming-systems/switch-2/tech-specs/"]},
-      "images": [],
+      "images": [
+        {"url": "images/photos/nintendo-switch-2-1.jpg", "thumb": "images/thumbs/nintendo-switch-2-1.webp", "alt": "Console in its dock with Joy-Con 2 attached, front", "isPrimary": true, "sortOrder": 0, "full": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Nintendo_Switch_2_in_Docking_Console.jpg", "width": 5855, "height": 3140, "credit": {"name": "Crisco 1492", "page": "https://commons.wikimedia.org/wiki/File:Nintendo_Switch_2_in_Docking_Console.jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}},
+        {"url": "images/photos/nintendo-switch-2-2.png", "thumb": "images/thumbs/nintendo-switch-2-2.webp", "alt": "Back of the console with its stand slightly open", "isPrimary": false, "sortOrder": 1, "full": "https://upload.wikimedia.org/wikipedia/commons/5/58/Nintendo_Switch_2-Konsole_von_hinten_20250605_HOF4680-HDR_RAW-Export.png", "width": 8828, "height": 4241, "credit": {"name": "PantheraLeo1359531", "page": "https://commons.wikimedia.org/wiki/File:Nintendo_Switch_2-Konsole_von_hinten_20250605_HOF4680-HDR_RAW-Export.png", "license": "CC BY 4.0", "licenseUrl": "https://creativecommons.org/licenses/by/4.0"}},
+        {"url": "images/photos/nintendo-switch-2-3.png", "thumb": "images/thumbs/nintendo-switch-2-3.webp", "alt": "Console with both Joy-Con 2 detached", "isPrimary": false, "sortOrder": 2, "full": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Nintendo_Switch_2_%E2%80%93_Tischmodus_20250606.png", "width": 8016, "height": 5252, "credit": {"name": "PantheraLeo1359531", "page": "https://commons.wikimedia.org/wiki/File:Nintendo_Switch_2_%E2%80%93_Tischmodus_20250606.png", "license": "CC BY 4.0", "licenseUrl": "https://creativecommons.org/licenses/by/4.0"}}
+      ],
       "reviews": []
     },
     {
@@ -166,12 +192,16 @@
       "badge": null, "badgeLabel": null, "isPreorder": false, "releaseDate": null,
       "priceCents": 33995, "compareAtCents": null, "fromPriceCents": 33995, "variantCount": 1,
       "createdAt": "2025-01-11T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 5, "inStock": true, "defaultVariantId": 15, "imageUrl": null,
+      "stock": 5, "inStock": true, "defaultVariantId": 15, "imageUrl": "images/thumbs/xbox-series-x-1.webp",
       "card": {"art": "console", "color": "#86c79b", "bg": "linear-gradient(140deg,#1d3a2b 0%,#10221a 55%,#09140f 100%)"},
       "variants": [{"id": 15, "sku": "MSX-XSX-1TB", "name": "Standard", "options": {}, "priceCents": 33995, "compareAtCents": null, "isDefault": true, "stock": 5, "inStock": true}],
       "specs": [{"key":"storage_gb","label":"Storage","value":"1000","unit":"GB"},{"key":"output","label":"Video output","value":"4K 120Hz","unit":null},{"key":"disc_drive","label":"Disc drive","value":"4K UHD Blu-ray","unit":null}],
       "look": {"summary": "A Carbon Black tower on a square base, about twice as tall as it is wide. It takes 4K UHD Blu-ray discs and comes with a controller.", "details": [["Colour", "Carbon Black"], ["Size", "15.1 × 15.1 × 30.1 cm"], ["Ports", "HDMI 2.1, 3 × USB 3.1 Gen 1, Ethernet, storage expansion slot at the back"], ["Controller", "Hybrid D-pad, textured triggers and bumpers"]], "size": [151, 301], "view": "Seen from the front", "sources": ["https://www.xbox.com/en-US/consoles/xbox-series-x"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/xbox-series-x-1.png", "thumb": "images/thumbs/xbox-series-x-1.webp", "alt": "Black tower console with controller, front at an angle", "isPrimary": true, "sortOrder": 0, "full": "images/maker/xbox-series-x-1.png", "width": 857, "height": 676, "credit": {"name": "Xbox", "page": "https://www.xbox.com/en-US/consoles/xbox-series-x"}},
+        {"url": "images/photos/xbox-series-x-2.jpg", "thumb": "images/thumbs/xbox-series-x-2.webp", "alt": "Console photographed from above showing the green-tinted top vent, with controller and box", "isPrimary": false, "sortOrder": 1, "full": "https://upload.wikimedia.org/wikipedia/commons/1/12/Xbox_Series_X_2.jpg", "width": 4200, "height": 4928, "credit": {"name": "Der. Bellemer", "page": "https://commons.wikimedia.org/wiki/File:Xbox_Series_X_2.jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}},
+        {"url": "images/maker/xbox-series-x-3.png", "thumb": "images/thumbs/xbox-series-x-3.webp", "alt": "Back panel with ports", "isPrimary": false, "sortOrder": 2, "full": "images/maker/xbox-series-x-3.png", "width": 857, "height": 676, "credit": {"name": "Xbox", "page": "https://www.xbox.com/en-US/consoles/xbox-series-x"}}
+      ],
       "reviews": []
     },
     {
@@ -181,12 +211,14 @@
       "badge": "sale", "badgeLabel": "-9% Off", "isPreorder": false, "releaseDate": null,
       "priceCents": 49995, "compareAtCents": 54995, "fromPriceCents": 49995, "variantCount": 1,
       "createdAt": "2025-01-12T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 7, "inStock": true, "defaultVariantId": 16, "imageUrl": null,
+      "stock": 7, "inStock": true, "defaultVariantId": 16, "imageUrl": "images/thumbs/asus-rog-ally-x-1.webp",
       "card": {"art": "handheld", "color": "#b8c1d4", "bg": "linear-gradient(140deg,#2d3342 0%,#171b25 55%,#0d1017 100%)"},
       "variants": [{"id": 16, "sku": "ASU-ALLYX-1TB", "name": "Standard", "options": {}, "priceCents": 49995, "compareAtCents": 54995, "isDefault": true, "stock": 7, "inStock": true}],
       "specs": [{"key":"processor","label":"Processor","value":"Ryzen Z1 Extreme","unit":null},{"key":"screen_size_in","label":"Screen size","value":"7","unit":"in"},{"key":"refresh_rate_hz","label":"Refresh rate","value":"120","unit":"Hz"},{"key":"ram_gb","label":"Memory","value":"24","unit":"GB"},{"key":"storage_gb","label":"Storage","value":"1000","unit":"GB"}],
       "look": {"summary": "A black handheld 28 cm wide and 11 cm tall, between 2.5 and 3.7 cm thick. A 7-inch anti-glare touch screen under Gorilla Glass Victus sits among two full-size thumbsticks, a D-pad and A, B, X and Y buttons, with two assignable grip buttons.", "details": [["Colour", "Black"], ["Size", "28.0 × 11.1 × 2.47–3.69 cm"], ["Weight", "678 g"], ["Controls", "Two thumbsticks, D-pad, ABXY, Hall effect triggers, bumpers, two grip buttons"], ["Ports", "2 × USB-C, microSD, 3.5 mm audio"]], "size": [280, 111], "view": "Seen from the front", "sources": ["https://ecommerce.datablitz.com.ph/products/asus-rog-ally-x-amd-z1-extreme-24gb-ram-1tb-ssd-7-fhd-120hz-windows-11-gaming-handheld-black", "https://rog.asus.com/gaming-handhelds/rog-ally/rog-ally-x-2024/spec/"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/asus-rog-ally-x-1.png", "thumb": "images/thumbs/asus-rog-ally-x-1.webp", "alt": "Black handheld, front, with lit thumbstick rings", "isPrimary": true, "sortOrder": 0, "full": "images/maker/asus-rog-ally-x-1.png", "width": 2000, "height": 817, "credit": {"name": "ASUS", "page": "https://rog.asus.com/gaming-handhelds/rog-ally/rog-ally-x-2024/"}}
+      ],
       "reviews": []
     },
     {
@@ -196,7 +228,7 @@
       "badge": null, "badgeLabel": null, "isPreorder": false, "releaseDate": null,
       "priceCents": 3995, "compareAtCents": null, "fromPriceCents": 3995, "variantCount": 3,
       "createdAt": "2025-01-13T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 49, "inStock": true, "defaultVariantId": 17, "imageUrl": null,
+      "stock": 49, "inStock": true, "defaultVariantId": 17, "imageUrl": "images/thumbs/sony-dualsense-1.webp",
       "card": {"art": "controller", "color": "#dfe5f2", "bg": "linear-gradient(140deg,#2f3a52 0%,#18203a 55%,#0e1324 100%)"},
       "variants": [
         {"id": 17, "sku": "SNY-DS-WHT", "look": "The original two-tone DualSense design.", "swatch": "#f2f3f5", "name": "White", "options": {"color":"White"}, "priceCents": 3995, "compareAtCents": null, "isDefault": true, "stock": 35, "inStock": true},
@@ -205,7 +237,11 @@
       ],
       "specs": [{"key":"connection","label":"Connection","value":"Bluetooth / USB-C","unit":null},{"key":"platform","label":"Platform","value":"PS5, PC","unit":null}],
       "look": {"summary": "A controller with a light bar and enhanced sticks.", "details": [["Lighting", "Light bar"], ["Connection", "USB-C cable or Bluetooth"]], "sources": ["https://www.playstation.com/en-us/accessories/dualsense-wireless-controller/"]},
-      "images": [],
+      "images": [
+        {"url": "images/photos/sony-dualsense-1.png", "thumb": "images/thumbs/sony-dualsense-1.webp", "alt": "White and black controller at an angle", "isPrimary": true, "sortOrder": 0, "full": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Playstation_DualSense_Controller.png", "width": 3120, "height": 2760, "credit": {"name": "Alex Cochrane", "page": "https://commons.wikimedia.org/wiki/File:Playstation_DualSense_Controller.png", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}, "variantId": 17},
+        {"url": "images/photos/sony-dualsense-2.jpg", "thumb": "images/thumbs/sony-dualsense-2.webp", "alt": "Midnight Black controller, front", "isPrimary": false, "sortOrder": 1, "full": "https://upload.wikimedia.org/wikipedia/commons/5/5b/Playstation_5_DualSense_controller_in_Midnight_Black%2C_2026-02-07_%28front%29.jpg", "width": 4700, "height": 3400, "credit": {"name": "Chris Woodrich", "page": "https://commons.wikimedia.org/wiki/File:Playstation_5_DualSense_controller_in_Midnight_Black,_2026-02-07_(front).jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}, "variantId": 18},
+        {"url": "images/photos/sony-dualsense-3.jpg", "thumb": "images/thumbs/sony-dualsense-3.webp", "alt": "Midnight Black controller, back", "isPrimary": false, "sortOrder": 2, "full": "https://upload.wikimedia.org/wikipedia/commons/5/52/Playstation_5_DualSense_controller_in_Midnight_Black%2C_2026-02-07_%28rear%29.jpg", "width": 4080, "height": 2961, "credit": {"name": "Chris Woodrich", "page": "https://commons.wikimedia.org/wiki/File:Playstation_5_DualSense_controller_in_Midnight_Black,_2026-02-07_(rear).jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}, "variantId": 18}
+      ],
       "reviews": []
     },
     {
@@ -230,12 +266,14 @@
       "badge": "sale", "badgeLabel": "-12% Off", "isPreorder": false, "releaseDate": null,
       "priceCents": 6995, "compareAtCents": 7995, "fromPriceCents": 6995, "variantCount": 1,
       "createdAt": "2025-01-15T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 26, "inStock": true, "defaultVariantId": 21, "imageUrl": null,
+      "stock": 26, "inStock": true, "defaultVariantId": 21, "imageUrl": "images/thumbs/corsair-vengeance-ddr5-32gb-1.webp",
       "card": {"art": "ram", "color": "#e0b670", "bg": "linear-gradient(140deg,#4a3a22 0%,#261d10 55%,#151008 100%)"},
       "variants": [{"id": 21, "sku": "COR-VEN-D5-32-6000", "name": "Black", "options": {"color":"Black"}, "priceCents": 6995, "compareAtCents": 7995, "isDefault": true, "stock": 26, "inStock": true}],
       "specs": [{"key":"memory_type","label":"Memory type","value":"DDR5","unit":null},{"key":"capacity_gb","label":"Capacity","value":"32","unit":"GB"},{"key":"speed_mhz","label":"Speed","value":"6000","unit":"MHz"},{"key":"cas_latency","label":"CAS latency","value":"CL30","unit":null}],
       "look": {"summary": "Two black modules in dual-tone aluminium heat spreaders. A panoramic light bar on each holds ten individually lit RGB LEDs.", "details": [["Colour", "Black, dual-tone"], ["Heat spreader", "Solid aluminium"], ["Lighting", "Panoramic bar, 10 RGB LEDs per module"], ["In the kit", "Two 16 GB modules"]], "sources": ["https://www.corsair.com/us/en/p/memory/cmh32gx5m2b6000c30/vengeance-rgb-32gb-2x16gb-ddr5-dram-6000mhz-c30-memory-kit-black-cmh32gx5m2b6000c30"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/corsair-vengeance-ddr5-32gb-1.webp", "thumb": "images/thumbs/corsair-vengeance-ddr5-32gb-1.webp", "alt": "Two black modules with lit RGB bars", "isPrimary": true, "sortOrder": 0, "full": "images/maker/corsair-vengeance-ddr5-32gb-1.webp", "width": 1920, "height": 1920, "credit": {"name": "Corsair", "page": "https://www.corsair.com/us/en/p/memory/cmh32gx5m2b6000c30/vengeance-rgb-32gb-2x16gb-ddr5-dram-6000mhz-c30-memory-kit-black-cmh32gx5m2b6000c30"}}
+      ],
       "reviews": []
     },
     {
@@ -245,7 +283,7 @@
       "badge": null, "badgeLabel": null, "isPreorder": false, "releaseDate": null,
       "priceCents": 6495, "compareAtCents": null, "fromPriceCents": 6495, "variantCount": 2,
       "createdAt": "2025-01-16T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 26, "inStock": true, "defaultVariantId": 22, "imageUrl": null,
+      "stock": 26, "inStock": true, "defaultVariantId": 22, "imageUrl": "images/thumbs/samsung-990-pro-1.webp",
       "card": {"art": "ssd", "color": "#9ccbe0", "bg": "linear-gradient(140deg,#20384a 0%,#112029 55%,#0a1318 100%)"},
       "variants": [
         {"id": 22, "sku": "SAM-990PRO-1TB", "name": "1TB", "options": {"capacity":"1TB"}, "priceCents": 6495, "compareAtCents": null, "isDefault": true, "stock": 19, "inStock": true},
@@ -253,7 +291,9 @@
       ],
       "specs": [{"key":"interface","label":"Interface","value":"PCIe 4.0 x4 NVMe","unit":null},{"key":"read_mbps","label":"Sequential read","value":"7450","unit":"MB/s"},{"key":"form_factor","label":"Form factor","value":"M.2 2280","unit":null}],
       "look": {"summary": "A bare M.2 2280 stick without a heatsink, 8 cm long and 2.2 cm wide.", "details": [["Size (1TB)", "80 × 22 × 2.3 mm"], ["Weight (1TB)", "Up to 9 g"], ["Form factor", "M.2 2280"]], "size": [80, 22], "view": "Seen from above (1TB)", "sources": ["https://ecommerce.datablitz.com.ph/products/samsung-990-pro-1tb-pcie-4-0-nvme-m-2-ssd-mz-v9p1t0bw"]},
-      "images": [],
+      "images": [
+        {"url": "images/photos/samsung-990-pro-1.jpg", "thumb": "images/thumbs/samsung-990-pro-1.webp", "alt": "Black M.2 drive with a 990 PRO label, lying in its tray", "isPrimary": true, "sortOrder": 0, "full": "https://upload.wikimedia.org/wikipedia/commons/4/46/SAMSUNG_M.2_NVMe_SSD_990_PRO_4TB.jpg", "width": 6478, "height": 4357, "credit": {"name": "Dinkun Chen", "page": "https://commons.wikimedia.org/wiki/File:SAMSUNG_M.2_NVMe_SSD_990_PRO_4TB.jpg", "license": "CC BY-SA 4.0", "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"}, "note": "4TB model shown."}
+      ],
       "reviews": []
     },
     {
@@ -263,12 +303,14 @@
       "badge": null, "badgeLabel": null, "isPreorder": false, "releaseDate": null,
       "priceCents": 7495, "compareAtCents": null, "fromPriceCents": 7495, "variantCount": 1,
       "createdAt": "2025-01-17T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 14, "inStock": true, "defaultVariantId": 24, "imageUrl": null,
+      "stock": 14, "inStock": true, "defaultVariantId": 24, "imageUrl": "images/thumbs/corsair-rm850e-1.webp",
       "card": {"art": "psu", "color": "#b8c1d4", "bg": "linear-gradient(140deg,#2b303c 0%,#161920 55%,#0c0e13 100%)"},
       "variants": [{"id": 24, "sku": "COR-RM850E", "name": "Standard", "options": {}, "priceCents": 7495, "compareAtCents": null, "isDefault": true, "stock": 14, "inStock": true}],
       "specs": [{"key":"wattage_w","label":"Wattage","value":"850","unit":"W"},{"key":"efficiency","label":"Efficiency","value":"80 Plus Gold","unit":null},{"key":"modular","label":"Modular","value":"Fully modular","unit":null}],
       "look": {"summary": "A compact box only 14 cm long with a single 120 mm fan that stops completely in Zero RPM mode. Every cable detaches, and all are debossed.", "details": [["Size", "140 × 150 × 86 mm"], ["Weight", "2 kg"], ["Fan", "120 mm rifle bearing, Zero RPM mode"], ["Cables", "Fully modular: 24-pin, 2 × CPU, 12V-2x6, PCIe, SATA"]], "size": [150, 86], "view": "Seen from the end", "sources": ["https://www.corsair.com/us/en/p/psu/cp-9020296-na/rm850e-fully-modular-low-noise-atx-power-supply-cp-9020296-na"]},
-      "images": [],
+      "images": [
+        {"url": "images/maker/corsair-rm850e-1.webp", "thumb": "images/thumbs/corsair-rm850e-1.webp", "alt": "Black power supply showing the fan grille and modular sockets", "isPrimary": true, "sortOrder": 0, "full": "images/maker/corsair-rm850e-1.webp", "width": 1920, "height": 1920, "credit": {"name": "Corsair", "page": "https://www.corsair.com/us/en/p/psu/cp-9020296-na/rm850e-fully-modular-low-noise-atx-power-supply-cp-9020296-na"}}
+      ],
       "reviews": []
     },
     {

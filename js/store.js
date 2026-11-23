@@ -79,6 +79,7 @@ function computeQuote(items) {
       available,
       inStock: available && v.stock >= ci.quantity,
       card: p.card,
+      imageUrl: p.images.find((i) => !i.variantId || i.variantId === v.id)?.thumb || null,
     };
   }).filter(Boolean);
 
