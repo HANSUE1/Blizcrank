@@ -37,7 +37,9 @@ Replaces the always-null `user` in `store.js`. Designed to support email/passwor
 | `firstName` | String | | | max 100 |
 | `lastName` | String | | | max 100 |
 | `phone` | String | | | max 30 |
-| `role` | String | ✅ (default `customer`) | yes | enum: `customer` \| `admin` |
+| `studentIdNumber` | String | | | max 50 |
+| `course` | String | | | max 100 |
+| `role` | String | ✅ (default `customer`) | yes | enum: `customer` \| `admin` \| `student` |
 | `emailVerified` | Boolean | ✅ (default `false`) | | |
 | `addresses[]` | Embedded doc | | | see Address sub-schema |
 | `createdAt`, `updatedAt` | Date | ✅ | | timestamps |

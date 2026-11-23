@@ -47,9 +47,11 @@ const userSchema = new mongoose.Schema(
     firstName: { type: String, trim: true, maxlength: 100 },
     lastName: { type: String, trim: true, maxlength: 100 },
     phone: { type: String, trim: true, maxlength: 30 },
+    studentIdNumber: { type: String, trim: true, maxlength: 50 },
+    course: { type: String, trim: true, maxlength: 100 },
     role: {
       type: String,
-      enum: ["customer", "admin"],
+      enum: ["customer", "admin", "student"],
       default: "customer",
       index: true,
     },
