@@ -3,5 +3,8 @@
   "private": true,
   "scripts": {
     "dev": "npx --yes serve ."
+  },
+  "dependencies": {
+    "mongoose": "^9.13.0"
   }
 }
