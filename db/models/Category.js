@@ -1,10 +1,8 @@
 import mongoose from "mongoose";
 
-// ---------------------------------------------------------------------------
 // Category — hierarchical category tree (laptops > gpus, components > cpus, …).
 // parentId forms the many-to-one self relationship. level is denormalized to
 // make depth queries cheap without recursive $graphLookup.
-// ---------------------------------------------------------------------------
 
 const categorySchema = new mongoose.Schema(
   {
