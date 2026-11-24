@@ -28,7 +28,9 @@ index.html            the storefront page
 styles.css            all styles
 js/main.js            entry point: loads catalog, wires links, search, filters, header counters
 js/store.js           shared state (products, cart, user, wishlist) + client-side actions
-server.js             serves the public files and /api/catalog
+server.js             serves the public files and dispatches API routes
+routes/               maps API paths to controllers
+controllers/          reads MongoDB through the models and sends the response
 db/catalog.js         shapes MongoDB documents for the storefront
 js/catalog.json       photos, look text and variant ids (other fields come from MongoDB)
 js/home.js            nav + mega menus, hero carousel, category tiles, brands, newsletter

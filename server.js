@@ -4,8 +4,8 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { connect, models, mongoose } from "./db/index.js";
-import { buildCatalog } from "./db/catalog.js";
+import { connect, mongoose } from "./db/index.js";
+import { catalogRoutes } from "./routes/catalogRoutes.js";
 
 const ROOT = fileURLToPath(new URL(".", import.meta.url));
 const TYPES = {
@@ -22,34 +22,17 @@ export function publicFile(pathname) {
   return PUBLIC.test(path) ? join(ROOT, path) : null;
 }
 
-async function loadCatalog() {
-  const find = (model, sort) => model.find({ isActive: { $ne: false } }).sort(sort).lean();
-  const [products, categories, brands, banners, rates, fallback] = await Promise.all([
-    find(models.Product, { _id: 1 }),
-    find(models.Category, { _id: 1 }),
-    find(models.Brand, { _id: 1 }),
-    find(models.Banner, { sortOrder: 1, _id: 1 }),
-    find(models.ShippingRate, { _id: 1 }),
-    readFile(join(ROOT, "js/catalog.json"), "utf8").then(JSON.parse),
-  ]);
-  return buildCatalog({ products, categories, brands, banners, rates }, fallback);
-}
-
 async function handle(req, res) {
-  const send = (status, type, body) =>
-    res.writeHead(status, { "Content-Type": type, "Cache-Control": "no-cache", "X-Content-Type-Options": "nosniff" }).end(body);
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  const send = (status, type, body) => res.writeHead(status, { "Content-Type": type }).end(body);
 
   if (req.method !== "GET" && req.method !== "HEAD") return send(405, "text/plain", "Method not allowed");
   const pathname = req.url.split("?")[0];
 
-  if (pathname === "/api/catalog") {
-    try {
-      return send(200, TYPES[".json"], JSON.stringify(await loadCatalog()));
-    } catch (err) {
-      console.error("[api] Catalog failed:", err.message);
-      return send(503, TYPES[".json"], '{"error":"Catalog unavailable"}');
-    }
-  }
+  // HEAD shares the GET route; Node drops the body.
+  const route = catalogRoutes[`GET ${pathname}`];
+  if (route) return route(req, res);
 
   const file = publicFile(pathname);
   const body = file && (await readFile(file).catch(() => null));
