@@ -1,5 +1,5 @@
 // Product quick view: gallery art, variant picker, stock, quantity, specs.
-// Frontend-only: product data from state.bySlug (loaded from catalog.json).
+// Frontend-only: product data from state.bySlug (loaded from api/catalog).
 
 import { esc, money, fmtDate, starsHTML, showToast, openDialog, setupDialog, closeIcon } from "./util.js";
 import { state, on, addToCart, toggleWish } from "./store.js";
@@ -157,7 +157,7 @@ dlg.addEventListener("click", async (e) => {
   const vBtn = e.target.closest("[data-variant]");
   if (vBtn) {
     shot = 0;
-    variant = current.variants.find((v) => v.id === Number(vBtn.dataset.variant));
+    variant = current.variants.find((v) => String(v.id) === vBtn.dataset.variant);
     qty = Math.min(qty, Math.max(1, variant.stock));
     return render();
   }

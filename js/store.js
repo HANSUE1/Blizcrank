@@ -1,10 +1,10 @@
 // App state + actions. Components subscribe with on("cart" | "wishlist" | "user", fn).
-// Frontend-only: catalog from static JSON, cart/wishlist/orders in localStorage.
+// Catalog from the server (MongoDB); cart/wishlist/orders in localStorage.
 
 export const state = {
-  products: [],        // product cards from catalog.json
+  products: [],        // product cards from api/catalog
   bySlug: {},
-  categories: [],      // tree from catalog.json
+  categories: [],      // tree from api/catalog
   categoryName: {},    // slug -> name (incl. children)
   banners: [],
   brands: [],
@@ -32,7 +32,9 @@ function writeLocal(patch) {
 // ---- catalog -------------------------------------------------------------------
 
 export async function loadCatalog() {
-  const data = await fetch("js/catalog.json").then((r) => r.json());
+  const res = await fetch("api/catalog");
+  if (!res.ok) throw new Error("Catalog unavailable");
+  const data = await res.json();
   state.products = data.products;
   state.bySlug = Object.fromEntries(data.products.map((x) => [x.slug, x]));
   state.categories = data.categories;

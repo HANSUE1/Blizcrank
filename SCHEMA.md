@@ -432,8 +432,8 @@ SCHEMA.md           This document
 ### Running the seed
 
 ```bash
-# Requires a running MongoDB instance (local: mongodb://127.0.0.1:27017/blitzcrank)
-MONGODB_URI=mongodb://127.0.0.1:27017/blitzcrank node --input-type=module db/seeds.js
+# Requires MONGODB_URI in ../.env
+node --env-file=../.env db/seeds.js
 ```
 
 The seed is idempotent: it clears `products`, `categories`, `brands`, `banners` and `shippingRates` before inserting, so it can be re-run against a fresh or existing dev database.

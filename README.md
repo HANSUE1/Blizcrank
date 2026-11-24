@@ -1,23 +1,25 @@
-# Blitzcrank — Gaming Gear Store (Frontend Only)
+# Blitzcrank — Gaming Gear Store
 
-A purely client-side storefront for gaming laptops, PC components, peripherals and consoles.
-No backend, no database, no npm dependencies. All data lives in `js/catalog.json`;
-cart, wishlist and order history are persisted in `localStorage`.
+A storefront for gaming laptops, PC components, peripherals and consoles. A small Node server
+reads the catalog from MongoDB; product photos and look text come from `js/catalog.json`. The cart, wishlist and order history are persisted in `localStorage`.
 
 ## Run it
 
-Serve the directory with any static file server:
+1. Create `.env` in the folder **above** this one, so no static file server can expose it:
 
-```bash
-npm run dev
-# or
-npx serve .
-# or
-python -m http.server 8080
-```
+   ```
+   MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>/blitzcrank
+   ```
 
-Then open the URL in a browser. Opening `index.html` directly via `file://` will not work
-because ES modules require HTTP.
+2. Install and start:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+Then open http://localhost:3000. A static file server alone will not work, because the page
+loads its catalog from `/api/catalog`.
 
 ## Project layout
 
@@ -26,7 +28,9 @@ index.html            the storefront page
 styles.css            all styles
 js/main.js            entry point: loads catalog, wires links, search, filters, header counters
 js/store.js           shared state (products, cart, user, wishlist) + client-side actions
-js/catalog.json       static catalog: products, categories, brands, banners, shipping rates
+server.js             serves the public files and /api/catalog
+db/catalog.js         shapes MongoDB documents for the storefront
+js/catalog.json       photos, look text and variant ids (other fields come from MongoDB)
 js/home.js            nav + mega menus, hero carousel, category tiles, brands, newsletter
 js/cards.js           product cards, rails, catalog grid filtering/sorting
 js/product.js         product quick view (variants, stock, specs)

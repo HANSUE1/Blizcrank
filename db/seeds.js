@@ -5,7 +5,7 @@
  * to populate the catalog, brands, categories, banners and shipping rates.
  *
  * Usage:
- *   node --input-type=module db/seeds.js
+ *   node --env-file=../.env db/seeds.js
  *
  * Requires MONGODB_URI (defaults to mongodb://127.0.0.1:27017/blitzcrank)
  * and a running MongoDB instance.

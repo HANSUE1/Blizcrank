@@ -1,8 +1,10 @@
 {
   "name": "blitzcrank",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "npx --yes serve ."
+    "dev": "node --env-file=../.env server.js",
+    "test": "node --test server.test.js"
   },
   "dependencies": {
     "mongoose": "^9.13.0"

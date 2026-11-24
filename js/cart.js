@@ -185,7 +185,7 @@ dlg.addEventListener("click", async (e) => {
   const act = e.target.closest("[data-cart]")?.dataset.cart;
   if (!act || busy) return;
   const line = e.target.closest("[data-item]");
-  const item = line && state.cart.items.find((i) => i.id === Number(line.dataset.item));
+  const item = line && state.cart.items.find((i) => String(i.id) === line.dataset.item);
   try {
     if (act === "inc") await setQty(item.id, item.quantity + 1);
     else if (act === "dec") await (item.quantity <= 1 ? removeItem(item.id) : setQty(item.id, item.quantity - 1));
