@@ -18,12 +18,10 @@ async function loadCatalog() {
 }
 
 export async function getCatalog(req, res) {
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
   try {
-    const body = JSON.stringify(await loadCatalog());
-    res.writeHead(200).end(body);
+    res.json(await loadCatalog());
   } catch (err) {
     console.error("[api] Catalog failed:", err.message);
-    res.writeHead(503).end('{"error":"Catalog unavailable"}');
+    res.status(503).json({ error: "Catalog unavailable" });
   }
 }

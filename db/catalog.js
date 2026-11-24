@@ -7,6 +7,9 @@ export function buildCatalog({ products, categories, brands, banners, rates }, f
   const slugOrder = fallback.categories.flatMap((c) => [c.slug, ...c.children.map((x) => x.slug)]);
   const position = (slug) => (slugOrder.includes(slug) ? slugOrder.indexOf(slug) : slugOrder.length);
 
+  // The storefront reads variants[0], so a product without variants cannot be shown.
+  const shown = products.filter((p) => p.variants?.length);
+
   const product = (doc, i) => {
     const old = oldProduct.get(doc.slug);
     const variants = doc.variants.map(({ _id, ...v }) => {
@@ -51,14 +54,14 @@ export function buildCatalog({ products, categories, brands, banners, rates }, f
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || position(a.slug) - position(b.slug))
     .map((c) => ({
       slug: c.slug, name: c.name, description: c.description ?? null,
-      productCount: c.productCount ?? 0, children: children(c._id),
+      productCount: shown.filter((p) => p.categorySlug === c.slug || p.topCategorySlug === c.slug).length,
+      children: children(c._id),
     }));
 
   return {
-    // The storefront reads variants[0], so a product without variants cannot be shown.
-    products: products.filter((p) => p.variants?.length).map(product),
+    products: shown.map(product),
     categories: children(null),
-    brands: brands.map((b) => ({ slug: b.slug, name: b.name, productCount: b.productCount ?? 0 })),
+    brands: brands.map((b) => ({ slug: b.slug, name: b.name, productCount: shown.filter((p) => p.brandName === b.name).length })),
     banners: banners
       .filter((b) => (!b.startDate || b.startDate <= now) && (!b.endDate || b.endDate > now))
       .map((b, i) => ({

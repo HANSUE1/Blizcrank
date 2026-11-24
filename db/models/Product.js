@@ -133,14 +133,13 @@ productSchema.query.active = function () {
 // single product duplicate SKUs are rejected by the pre-save hook below.
 productSchema.index({ "variants.sku": 1 }, { unique: true, partialFilterExpression: { "variants.sku": { $exists: true } } });
 
-productSchema.pre("save", function (next) {
+productSchema.pre("save", function () {
   const skus = this.variants.map((v) => v.sku);
   if (new Set(skus).size !== skus.length) {
     const err = new Error("Duplicate variant SKU within product");
     err.statusCode = 400;
-    return next(err);
+    throw err;
   }
-  next();
 });
 
 export default mongoose.model("Product", productSchema);

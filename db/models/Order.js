@@ -123,9 +123,8 @@ orderSchema.index({ email: 1, placedAt: -1 });
 orderSchema.index({ status: 1, placedAt: -1 });
 
 // Keep `updatedAt` in sync with `placedAt`-style writes.
-orderSchema.pre("save", function (next) {
+orderSchema.pre("save", function () {
   this.updatedAt = new Date();
-  next();
 });
 
 export default mongoose.model("Order", orderSchema);

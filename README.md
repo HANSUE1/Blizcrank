@@ -1,7 +1,8 @@
 # Blitzcrank — Gaming Gear Store
 
-A storefront for gaming laptops, PC components, peripherals and consoles. A small Node server
-reads the catalog from MongoDB; product photos and look text come from `js/catalog.json`. The cart, wishlist and order history are persisted in `localStorage`.
+A storefront for gaming laptops, PC components, peripherals and consoles. Built on the
+MERN stack: MongoDB Atlas, an Express API, a React admin page and Node.js. The storefront is plain
+JavaScript and reads the catalog from the API; product photos and look text come from `js/catalog.json`. The cart, wishlist and order history are persisted in `localStorage`.
 
 ## Run it
 
@@ -18,7 +19,7 @@ reads the catalog from MongoDB; product photos and look text come from `js/catal
    npm run dev
    ```
 
-Then open http://localhost:3000. A static file server alone will not work, because the page
+Then open http://localhost:3000 for the store, or http://localhost:3000/admin/ to manage products. A static file server alone will not work, because the page
 loads its catalog from `/api/catalog`.
 
 ## Project layout
@@ -28,9 +29,10 @@ index.html            the storefront page
 styles.css            all styles
 js/main.js            entry point: loads catalog, wires links, search, filters, header counters
 js/store.js           shared state (products, cart, user, wishlist) + client-side actions
-server.js             serves the public files and dispatches API routes
-routes/               maps API paths to controllers
-controllers/          reads MongoDB through the models and sends the response
+server.js             Express app: public files, admin page, API routes, error handling
+routes/               Express routers: /api/catalog and /api/products
+controllers/          read and write MongoDB through the models
+admin/                React admin page (built with Vite into admin/dist)
 db/catalog.js         shapes MongoDB documents for the storefront
 js/catalog.json       photos, look text and variant ids (other fields come from MongoDB)
 js/home.js            nav + mega menus, hero carousel, category tiles, brands, newsletter
@@ -43,6 +45,7 @@ js/art.js, util.js    product line art; formatting/dialog helpers
 
 ## What works
 
+- Create, read, update and delete products on the admin page (saved to MongoDB)
 - Browse the full product catalog, categories and brands
 - Search, filter and sort products client-side
 - Product quick view with variants, specs and stock
@@ -57,5 +60,5 @@ js/art.js, util.js    product line art; formatting/dialog helpers
 - User accounts and authentication
 - Real payment processing
 - Server-side inventory management and stock validation
-- Admin panel
+- Admin login: until there is one, the product API only answers requests from this computer
 - Newsletter subscription storage (stored locally only)
