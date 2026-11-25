@@ -1,8 +1,8 @@
 // Product quick view: gallery art, variant picker, stock, quantity, specs.
-// Frontend-only: product data from state.bySlug (loaded from api/catalog).
 
-import { esc, money, fmtDate, starsHTML, showToast, openDialog, setupDialog, closeIcon } from "./util.js";
-import { state, on, addToCart, toggleWish } from "./store.js";
+import { esc, money, fmtDate, starsHTML, showToast, openDialog, setupDialog, closeIcon, renderInto } from "./util.js";
+import { state, on, addToCart, toggleWish, MAX_QTY } from "./store.js";
+import { HEART_ICON } from "./art.js";
 import { mediaHTML } from "./cards.js";
 
 const dlg = document.getElementById("product-dialog");
@@ -15,7 +15,10 @@ let shot = 0;
 
 function stockText(v) {
   if (!v.inStock) return '<span class="stock is-out">Sold out</span>';
-  if (current.isPreorder) return `<span class="stock is-pre">Pre-order · ships ${esc(fmtDate(current.releaseDate))}</span>`;
+  if (current.isPreorder) {
+    const when = current.releaseDate ? `ships ${fmtDate(current.releaseDate)}` : "release date to be announced";
+    return `<span class="stock is-pre">Pre-order · ${when}</span>`;
+  }
   if (v.stock <= 3) return `<span class="stock is-low">Only ${v.stock} left in stock</span>`;
   return '<span class="stock is-in">In stock · ships in 1–2 days</span>';
 }
@@ -67,7 +70,7 @@ function render() {
   const p = current;
   const v = variant;
   const wished = !!state.wished[p.slug];
-  const maxQty = Math.max(1, Math.min(99, v.stock));
+  const maxQty = Math.max(1, Math.min(MAX_QTY, v.stock));
   const price = `<span class="price">${money(v.priceCents)}</span>` +
     (v.compareAtCents ? `<span class="price-old">${money(v.compareAtCents)}</span>` +
       `<span class="save">Save ${money(v.compareAtCents - v.priceCents)}</span>` : "");
@@ -90,7 +93,7 @@ function render() {
       <dl class="pd-facts">${p.look.details.map(([k, val]) => `<div><dt>${esc(k)}</dt><dd>${esc(val)}</dd></div>`).join("")}</dl>
     </section>` : "";
 
-  dlg.innerHTML = `
+  renderInto(dlg, `
     <div class="pd">
       <button class="icon-btn pd-close" type="button" data-close aria-label="Close">${closeIcon}</button>
       <div class="pd-media">${galleryHTML(p, v)}${p.badgeLabel ? `<span class="card-badge ${esc(p.badge)}">${esc(p.badgeLabel)}</span>` : ""}</div>
@@ -104,7 +107,7 @@ function render() {
         ${variants}
         <p class="pd-stock">${stockText(v)}</p>
         <div class="pd-buy">
-          <div class="qty" aria-label="Quantity">
+          <div class="qty" role="group" aria-label="Quantity">
             <button type="button" data-qty="-1" aria-label="Decrease quantity" ${qty <= 1 ? "disabled" : ""}>−</button>
             <output aria-live="polite">${qty}</output>
             <button type="button" data-qty="1" aria-label="Increase quantity" ${qty >= maxQty ? "disabled" : ""}>+</button>
@@ -113,7 +116,7 @@ function render() {
             ${v.inStock ? (p.isPreorder ? "Pre-order now" : "Add to cart") : "Sold out"}</button>
           <button class="icon-btn wish-big${wished ? " is-wished" : ""}" type="button" data-pd="wish"
             aria-label="${wished ? "Remove from" : "Add to"} wishlist" aria-pressed="${wished}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20.3 4.9 13A4.8 4.8 0 0 1 12 6.4 4.8 4.8 0 0 1 19.1 13Z"/></svg></button>
+            ${HEART_ICON}</button>
         </div>
         <ul class="pd-perks">
           <li>100% brand new &amp; official local warranty</li>
@@ -126,33 +129,33 @@ function render() {
         <section><h3 class="pd-h">Reviews</h3>
           <p class="muted">${p.reviewCount ? `Rated ${Number(p.rating).toFixed(1)} out of 5 from ${p.reviewCount} reviews.` : "No reviews yet."}</p></section>
       </div>
-    </div>`;
-  dlg.setAttribute("aria-labelledby", "pd-title");
+    </div>`);
 }
 
-export async function openProduct(slug) {
-  dlg.innerHTML = '<div class="pd-loading"><div class="loading" role="status"><span class="spin" aria-hidden="true"></span>Loading…</div></div>';
-  openDialog(dlg);
-  const p = state.bySlug[slug];
-  if (!p) {
-    dlg.innerHTML = '<div class="pd-loading"><p>Product not found.</p><button class="btn btn-ghost" data-close>Close</button></div>';
-    return;
+export function openProduct(slug) {
+  current = state.bySlug[slug] ?? null;
+  if (current) {
+    // The default option, unless it is sold out.
+    const byId = current.variants.find((v) => v.id === current.defaultVariantId);
+    variant = byId?.inStock ? byId : current.variants.find((v) => v.inStock) || current.variants[0];
+    qty = 1;
+    shot = 0;
+    render();
+    dlg.setAttribute("aria-labelledby", "pd-title");
+  } else {
+    dlg.innerHTML = '<div class="pd-missing"><p>Product not found.</p><button class="btn btn-ghost" type="button" data-close>Close</button></div>';
+    dlg.removeAttribute("aria-labelledby");
   }
-  current = p;
-  variant = p.variants.find((v) => v.inStock) || p.variants[0];
-  qty = 1;
-  shot = 0;
-  render();
+  openDialog(dlg);
+  dlg.scrollTop = 0;
 }
 
-dlg.addEventListener("click", async (e) => {
+dlg.addEventListener("click", (e) => {
   if (!current) return;
   const sBtn = e.target.closest("[data-shot]");
   if (sBtn) {
     shot = Number(sBtn.dataset.shot);
-    render();
-    dlg.querySelector(`[data-shot="${shot}"]`).focus();
-    return;
+    return render();
   }
   const vBtn = e.target.closest("[data-variant]");
   if (vBtn) {
@@ -163,26 +166,19 @@ dlg.addEventListener("click", async (e) => {
   }
   const qBtn = e.target.closest("[data-qty]");
   if (qBtn) {
-    qty = Math.max(1, Math.min(99, variant.stock, qty + Number(qBtn.dataset.qty)));
+    qty = Math.max(1, Math.min(MAX_QTY, variant.stock, qty + Number(qBtn.dataset.qty)));
     return render();
   }
   const act = e.target.closest("[data-pd]")?.dataset.pd;
   if (act === "add") {
-    const btn = e.target.closest("button");
-    btn.disabled = true;
     try {
-      await addToCart(variant.id, qty);
-      showToast(`<span class="gold">⚡</span> Added ${qty} × ${esc(current.name)}`);
+      addToCart(variant.id, qty);
       dlg.close();
-    } catch (err) {
-      showToast(esc(err.message));
-      btn.disabled = false;
-    }
-  } else if (act === "wish") {
-    try {
-      const added = await toggleWish(current.slug);
-      showToast(added ? '<span class="gold">♥</span> Saved to wishlist' : "Removed from wishlist");
+      showToast(`<span class="gold">⚡</span> Added ${qty} × ${esc(current.name)} <button class="toast-link" type="button" data-link="#cart">View cart</button>`);
     } catch (err) { showToast(esc(err.message)); }
+  } else if (act === "wish") {
+    const added = toggleWish(current.slug);
+    showToast(added ? '<span class="gold">♥</span> Saved to wishlist' : "Removed from wishlist");
   }
 });
 

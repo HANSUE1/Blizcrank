@@ -15,6 +15,14 @@ async function request(url, method = "GET", body) {
   return data;
 }
 
+// The variants are the source of truth; a stored total can be out of date.
+const stockOf = (product) => product.variants.reduce((sum, v) => sum + v.stock, 0);
+
+function StockCell({ stock }) {
+  const label = stock === 0 ? "Sold out" : stock <= 3 ? "Low" : "";
+  return <>{label && <span className={stock === 0 ? "tag bad" : "tag warn"}>{label}</span>} {stock}</>;
+}
+
 const flatten = (list, prefix = "") =>
   list.flatMap((c) => [{ slug: c.slug, label: prefix + c.name }, ...flatten(c.children, `${prefix}${c.name} / `)]);
 
@@ -70,7 +78,7 @@ export default function App() {
       <header>
         <div>
           <h1>Products</h1>
-          <p className="muted">{products ? `${products.length} in the database` : "Loading from the database"}</p>
+          <p className="muted">{products ? `${products.length} in the database` : error ? "Could not load the products" : "Loading from the database"}</p>
         </div>
         <a href="/">View store</a>
       </header>
@@ -78,7 +86,7 @@ export default function App() {
       <div className="toolbar">
         <label>
           <span>Search</span>
-          <input type="search" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <input type="search" placeholder="Name, brand or category" value={search} onChange={(e) => setSearch(e.target.value)} />
         </label>
         <button type="button" className="primary" disabled={!products} onClick={() => { setMessage(""); setEditing({}); }}>Add product</button>
       </div>
@@ -94,11 +102,11 @@ export default function App() {
           <tbody>
             {shown.map((p) => (
               <tr key={p._id}>
-                <td>{p.name}</td>
-                <td>{p.brandName}</td>
-                <td>{categories.find((c) => c.slug === p.categorySlug)?.label ?? p.categorySlug}</td>
-                <td className="num">{money(p.priceCents)}</td>
-                <td className="num">{p.stock}</td>
+                <td data-label="Name" className="name">{p.name}</td>
+                <td data-label="Brand">{p.brandName}</td>
+                <td data-label="Category">{categories.find((c) => c.slug === p.categorySlug)?.label ?? p.categorySlug}</td>
+                <td data-label="Price" className="num">{money(p.priceCents)}</td>
+                <td data-label="Stock" className="num"><StockCell stock={stockOf(p)} /></td>
                 <td className="actions">
                   <button type="button" aria-label={`Edit ${p.name}`} onClick={() => { setMessage(""); setEditing(p); }}>Edit</button>
                   <button type="button" className="danger" aria-label={`Delete ${p.name}`} onClick={() => remove(p)}>Delete</button>

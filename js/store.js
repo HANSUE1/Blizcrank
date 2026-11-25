@@ -1,5 +1,5 @@
-// App state + actions. Components subscribe with on("cart" | "wishlist" | "user", fn).
-// Catalog from the server (MongoDB); cart/wishlist/orders in localStorage.
+// App state + actions. Components subscribe with on("cart" | "wishlist", fn).
+// Catalog from the server (MongoDB); cart, wishlist and orders in localStorage.
 
 export const state = {
   products: [],        // product cards from api/catalog
@@ -9,7 +9,6 @@ export const state = {
   banners: [],
   brands: [],
   rates: [],           // shipping rates
-  user: null,          // always null (no auth)
   cart: null,          // client-side cart quote
   region: null,        // chosen shipping region
   wished: {},          // slug -> true
@@ -17,17 +16,25 @@ export const state = {
 
 const listeners = {};
 export const on = (evt, fn) => (listeners[evt] = listeners[evt] || []).push(fn);
-export const emit = (evt) => (listeners[evt] || []).forEach((fn) => fn());
+const emit = (evt) => (listeners[evt] || []).forEach((fn) => fn());
 
-// ---- local preferences -------------------------------------------------------
+// ---- localStorage ------------------------------------------------------------
 
-const LS_KEY = "blitzcrank-state";
-function readLocal() {
-  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch { return {}; }
+const PREFS_KEY = "blitzcrank-state";
+const CART_KEY = "blitzcrank-cart";
+const ORDERS_KEY = "blitzcrank-orders";
+
+export function readStored(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
 }
-function writeLocal(patch) {
-  try { localStorage.setItem(LS_KEY, JSON.stringify({ ...readLocal(), ...patch })); } catch { /* ignore */ }
+
+// False when the browser blocks storage or it is full.
+export function writeStored(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; }
 }
+
+const readPrefs = () => readStored(PREFS_KEY, {});
+const writePrefs = (patch) => writeStored(PREFS_KEY, { ...readPrefs(), ...patch });
 
 // ---- catalog -------------------------------------------------------------------
 
@@ -43,164 +50,123 @@ export async function loadCatalog() {
   state.banners = data.banners;
   state.brands = data.brands;
   state.rates = data.rates;
-  const saved = readLocal().region;
+  const saved = readPrefs().region;
   state.region = state.rates.some((x) => x.region === saved) ? saved : null;
 }
 
-// ---- cart (client-side, persisted in localStorage) ----------------------------
+// ---- cart ----------------------------------------------------------------------
 
-const CART_KEY = "blitzcrank-cart";
+export const MAX_QTY = 99;
 
-function readCart() {
-  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
-}
+const readCart = () => readStored(CART_KEY, []);
+
 function writeCart(items) {
-  try { localStorage.setItem(CART_KEY, JSON.stringify(items)); } catch { /* ignore */ }
+  if (!writeStored(CART_KEY, items)) throw new Error("Your browser is blocking storage, so the cart cannot be saved.");
 }
 
-function computeQuote(items) {
-  const enriched = items.map((ci) => {
+// Stands in for a variant that was removed from the store after it went in the cart.
+const REMOVED_VARIANT = { name: "Option no longer sold", priceCents: 0, stock: 0, inStock: false };
+
+function computeQuote(saved) {
+  const items = saved.flatMap((ci) => {
     const p = state.bySlug[ci.productSlug];
-    if (!p) return null;
-    const v = p.variants.find((x) => x.id === ci.variantId) || p.variants[0];
-    const available = p.inStock && v.inStock;
+    if (!p) return [];
+    const found = p.variants.find((x) => x.id === ci.variantId);
+    const v = found ?? REMOVED_VARIANT;
     return {
-      id: ci.variantId,
-      variantId: v.id,
-      productId: p.id,
-      productSlug: p.slug,
+      variantId: ci.variantId,
       productName: p.name,
       variantName: v.name,
-      sku: v.sku,
-      options: v.options,
       quantity: ci.quantity,
-      unitPriceCents: v.priceCents,
-      compareAtCents: v.compareAtCents,
       lineTotalCents: v.priceCents * ci.quantity,
       stock: v.stock,
-      available,
-      inStock: available && v.stock >= ci.quantity,
+      available: Boolean(found),
+      inStock: v.inStock && v.stock >= ci.quantity,
       card: p.card,
-      imageUrl: p.images.find((i) => !i.variantId || i.variantId === v.id)?.thumb || null,
+      imageUrl: p.images.find((i) => !i.variantId || i.variantId === ci.variantId)?.thumb || null,
     };
-  }).filter(Boolean);
+  });
 
-  const subtotalCents = enriched.reduce((s, i) => s + i.lineTotalCents, 0);
-  const itemCount = enriched.reduce((s, i) => s + i.quantity, 0);
+  const subtotalCents = items.reduce((s, i) => s + i.lineTotalCents, 0);
+  const itemCount = items.reduce((s, i) => s + i.quantity, 0);
 
+  const shipping = state.rates.find((r) => r.region === state.region) ?? null;
   let shippingCents = null;
-  let shipping = null;
-  if (state.region) {
-    const rate = state.rates.find((r) => r.region === state.region);
-    if (rate) {
-      const free = rate.freeOverCents !== null && subtotalCents >= rate.freeOverCents;
-      shippingCents = enriched.length === 0 || free ? 0 : rate.feeCents;
-      shipping = { region: rate.region, feeCents: rate.feeCents, freeOverCents: rate.freeOverCents, etaDays: rate.etaDays };
-    }
+  if (shipping) {
+    const free = shipping.freeOverCents !== null && subtotalCents >= shipping.freeOverCents;
+    shippingCents = !items.length || free ? 0 : shipping.feeCents;
   }
 
   const totalCents = subtotalCents + (shippingCents || 0);
-  const taxCents = Math.round((totalCents * 12) / 112);
-
-  return {
-    cartId: null, items: enriched, itemCount,
-    subtotalCents, discountCents: 0, shippingCents, taxCents, totalCents,
-    coupon: null, shipping,
-  };
+  const taxCents = Math.round((totalCents * 12) / 112); // prices already include 12% VAT
+  return { items, itemCount, subtotalCents, shipping, shippingCents, taxCents, totalCents };
 }
 
-export function setCart(cart) { state.cart = cart; emit("cart"); }
-
-export async function refreshCart() {
-  setCart(computeQuote(readCart()));
-  return state.cart;
+export function refreshCart() {
+  state.cart = computeQuote(readCart());
+  emit("cart");
 }
 
-export async function setRegion(region) {
+export function setRegion(region) {
   state.region = region || null;
-  writeLocal({ region: state.region });
-  return refreshCart();
+  writePrefs({ region: state.region });
+  refreshCart();
 }
 
-export async function addToCart(variantId, quantity = 1) {
+export function addToCart(variantId, quantity = 1) {
+  const product = state.products.find((x) => x.variants.some((v) => v.id === variantId));
+  if (!product) throw new Error("Product not found");
   const items = readCart();
-  const p = state.products.find((x) => x.variants.some((v) => v.id === variantId));
-  if (!p) throw new Error("Product not found");
   const existing = items.find((i) => i.variantId === variantId);
-  if (existing) {
-    existing.quantity = Math.min(99, existing.quantity + quantity);
-  } else {
-    items.push({ variantId, productSlug: p.slug, quantity });
+  const inCart = existing?.quantity ?? 0;
+  const max = Math.min(MAX_QTY, product.variants.find((v) => v.id === variantId).stock);
+  if (inCart + quantity > max) {
+    throw new Error(`Only ${max} available${inCart ? `, and ${inCart} already in your cart` : ""}.`);
   }
+  if (existing) existing.quantity += quantity;
+  else items.push({ variantId, productSlug: product.slug, quantity });
   writeCart(items);
-  return refreshCart();
+  refreshCart();
 }
 
-export async function setQty(itemId, quantity) {
+export function setQty(variantId, quantity) {
   const items = readCart();
-  const item = items.find((i) => i.variantId === itemId);
-  if (!item) return refreshCart();
-  if (quantity <= 0) {
-    writeCart(items.filter((i) => i.variantId !== itemId));
-  } else {
-    item.quantity = Math.min(99, quantity);
-    writeCart(items);
+  const item = items.find((i) => i.variantId === variantId);
+  if (item) {
+    item.quantity = Math.min(MAX_QTY, quantity);
+    writeCart(items.filter((i) => i.quantity > 0));
   }
-  return refreshCart();
+  refreshCart();
 }
 
-export async function removeItem(itemId) {
-  const items = readCart().filter((i) => i.variantId !== itemId);
-  writeCart(items);
-  return refreshCart();
+export const removeItem = (variantId) => setQty(variantId, 0);
+
+// ---- orders --------------------------------------------------------------------
+
+export const readOrders = () => readStored(ORDERS_KEY, []);
+
+// The cart is emptied only after the order is safely stored.
+export function placeOrder(order) {
+  if (!writeStored(ORDERS_KEY, [...readOrders(), order])) {
+    throw new Error("Your browser is blocking storage, so the order could not be saved. Your cart is unchanged.");
+  }
+  writeCart([]);
+  refreshCart();
 }
 
-export async function applyCoupon(code) {
-  // No server-side coupons; just show a message.
-  throw new Error("Coupons are not available in this demo.");
-}
+// ---- wishlist ------------------------------------------------------------------
 
-export async function removeCoupon() {
-  return refreshCart();
-}
-
-// ---- user (always null — no auth) --------------------------------------------
-
-export async function loadUser() {
-  state.user = null;
-}
-
-export async function signIn() {
-  state.user = null;
-  emit("user");
-}
-
-export async function register() {
-  state.user = null;
-  emit("user");
-}
-
-export async function signOut() {
-  state.user = null;
-  state.wished = {};
-  await refreshCart();
-  emit("wishlist");
-  emit("user");
-}
-
-// ---- wishlist (localStorage only) --------------------------------------------
-
-export async function loadWishlist() {
-  state.wished = { ...(readLocal().wished || {}) };
+export function loadWishlist() {
+  state.wished = { ...readPrefs().wished };
   emit("wishlist");
 }
 
-export async function toggleWish(slug) {
-  const on_ = !state.wished[slug];
-  if (on_) state.wished[slug] = true; else delete state.wished[slug];
+export function toggleWish(slug) {
+  const added = !state.wished[slug];
+  if (added) state.wished[slug] = true; else delete state.wished[slug];
+  writePrefs({ wished: state.wished });
   emit("wishlist");
-  writeLocal({ wished: state.wished });
-  return on_;
+  return added;
 }
 
 export const wishCount = () => Object.keys(state.wished).filter((s) => state.bySlug[s]).length;

@@ -100,7 +100,6 @@ const orderSchema = new mongoose.Schema(
       index: true,
     },
     placedAt: { type: Date, default: Date.now, index: true },
-    updatedAt: { type: Date, default: Date.now },
     items: [orderItemSchema],
     shippingAddress: { type: shippingAddressSchema, required: true },
     region: { type: String, trim: true, required: true },
@@ -121,10 +120,5 @@ const orderSchema = new mongoose.Schema(
 orderSchema.index({ userId: 1, placedAt: -1 });
 orderSchema.index({ email: 1, placedAt: -1 });
 orderSchema.index({ status: 1, placedAt: -1 });
-
-// Keep `updatedAt` in sync with `placedAt`-style writes.
-orderSchema.pre("save", function () {
-  this.updatedAt = new Date();
-});
 
 export default mongoose.model("Order", orderSchema);

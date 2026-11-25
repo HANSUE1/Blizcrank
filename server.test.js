@@ -41,7 +41,8 @@ test("product form data is checked and totals come from the variants", () => {
 
   for (const body of [undefined, { name: "x" }, { name: "", variants: [variant("a", 1, 1)] }, { name: { $ne: 1 }, variants: [variant("a", 1, 1)] },
     { name: "x", variants: [null] }, { name: "x", variants: [variant("a", -1, 1)] }, { name: "x", variants: [variant("a", 1.5, 1)] },
-    { name: "x", variants: [variant("a", "1", 1)] }, { name: "x", variants: [variant("a", 1, NaN)] }, { name: "x", variants: [variant("a", 1, 1), variant("A", 1, 1)] }]) {
+    { name: "x", variants: [variant("a", "1", 1)] }, { name: "x", variants: [variant("a", 1, NaN)] }, { name: "x", variants: [variant("a", 1, 1), variant("A", 1, 1)] },
+    { name: "x", variants: [{ ...variant("a", 5, 1), compareAtCents: 5 }] }]) {
     assert.throws(() => productFields(body), { status: 400 });
   }
   assert.equal(slugify("ROG Strix — 16\""), "rog-strix-16");
@@ -71,4 +72,17 @@ test("database values win; photos and numeric variant ids come from catalog.json
   assert.deepEqual(out.categories.map((c) => [c.slug, c.children.map((x) => x.slug)]), [["x", []], ["y", ["z"]]]);
   assert.deepEqual(out.categories.map((c) => c.productCount), [0, 2]);
   assert.deepEqual(out.banners.map((b) => b.title), ["live"]);
+});
+
+test("sale labels, stock and release dates follow the stored product", () => {
+  const doc = (fields) => ({ slug: "s", badge: "sale", badgeLabel: "-50% Off", priceCents: 90, compareAtCents: 100, variants: [{ _id: "v", sku: "S", priceCents: 90, stock: 2 }], ...fields });
+  const build = (fields) => buildCatalog({ products: [doc(fields)], categories: [], brands: [], rates: [], banners: [] }, { products: [], categories: [] }).products[0];
+  const label = (p) => [p.badge, p.badgeLabel, p.compareAtCents];
+
+  assert.deepEqual(label(build()), ["sale", "-10% Off", 100]);
+  assert.deepEqual(label(build({ compareAtCents: null })), [null, null, null]);
+  assert.deepEqual(label(build({ priceCents: 120 })), [null, null, null]);
+  assert.deepEqual(label(build({ badge: "hot", badgeLabel: "Hot" })), ["hot", "Hot", 100]);
+  assert.equal(build({ stock: 99 }).stock, 2);
+  assert.equal(build({ releaseDate: new Date("2026-12-12") }).releaseDate, "2026-12-12");
 });

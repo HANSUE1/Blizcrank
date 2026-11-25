@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema(
   {
-    _id: false,
     label: {
       type: String,
       trim: true,
@@ -61,7 +60,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-userSchema.index({ email: 1 }, { unique: true });
 userSchema.index({ role: 1, email: 1 });
 
 userSchema.virtual("fullName").get(function () {

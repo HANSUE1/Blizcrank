@@ -25,12 +25,10 @@ const cartSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       default: null,
-      index: true,
     },
     sessionId: {
       type: String,
       default: null,
-      index: true,
     }, // guest cart identifier
     items: [cartItemSchema],
     region: { type: String, trim: true, default: null },
@@ -46,8 +44,8 @@ const cartSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// One active cart per user or per session.
-cartSchema.index({ userId: 1 }, { unique: true, partialFilterExpression: { userId: { $exists: true, $ne: null } } });
-cartSchema.index({ sessionId: 1 }, { unique: true, partialFilterExpression: { sessionId: { $exists: true, $ne: null } } });
+// One active cart per user or per session. $type skips the null defaults (partial indexes do not support $ne). Named, because databases made earlier have plain userId_1 and sessionId_1 indexes.
+cartSchema.index({ userId: 1 }, { name: "one_cart_per_user", unique: true, partialFilterExpression: { userId: { $type: "objectId" } } });
+cartSchema.index({ sessionId: 1 }, { name: "one_cart_per_session", unique: true, partialFilterExpression: { sessionId: { $type: "string" } } });
 
 export default mongoose.model("Cart", cartSchema);

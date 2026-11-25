@@ -24,7 +24,7 @@
       "badge": "sale", "badgeLabel": "-13% Off", "isPreorder": false, "releaseDate": null,
       "priceCents": 5499500, "compareAtCents": 6299500, "fromPriceCents": 5499500, "variantCount": 2,
       "createdAt": "2025-01-02T00:00:00Z", "rating": 4.7, "reviewCount": 188,
-      "stock": 15, "inStock": true, "defaultVariantId": 2, "imageUrl": null,
+      "stock": 19, "inStock": true, "defaultVariantId": 2, "imageUrl": null,
       "card": {"art": "laptop", "color": "#d98a8a", "bg": "linear-gradient(140deg,#4a3328 0%,#241812 55%,#140d09 100%)"},
       "variants": [
         {"id": 2, "sku": "MSI-KAT15-5060-16", "name": "16GB / 512GB", "options": {"ram":"16GB","storage":"512GB"}, "priceCents": 5499500, "compareAtCents": 6299500, "isDefault": true, "stock": 16, "inStock": true},
@@ -75,7 +75,7 @@
       "badge": "new", "badgeLabel": "New", "isPreorder": false, "releaseDate": null,
       "priceCents": 1199500, "compareAtCents": null, "fromPriceCents": 1199500, "variantCount": 2,
       "createdAt": "2025-01-05T00:00:00Z", "rating": 4.8, "reviewCount": 154,
-      "stock": 25, "inStock": true, "defaultVariantId": 6, "imageUrl": "images/thumbs/razer-blackwidow-v4-1.webp",
+      "stock": 31, "inStock": true, "defaultVariantId": 6, "imageUrl": "images/thumbs/razer-blackwidow-v4-1.webp",
       "card": {"art": "keyboard", "color": "#b48fd4", "bg": "linear-gradient(140deg,#3a2a52 0%,#1e1530 55%,#110b1d 100%)"},
       "variants": [
         {"id": 6, "sku": "RZR-BWV4P-GRN", "name": "Green (Clicky)", "options": {"switch":"Green"}, "priceCents": 1199500, "compareAtCents": null, "isDefault": true, "stock": 21, "inStock": true},
@@ -228,7 +228,7 @@
       "badge": null, "badgeLabel": null, "isPreorder": false, "releaseDate": null,
       "priceCents": 399500, "compareAtCents": null, "fromPriceCents": 399500, "variantCount": 3,
       "createdAt": "2025-01-13T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 49, "inStock": true, "defaultVariantId": 17, "imageUrl": "images/thumbs/sony-dualsense-1.webp",
+      "stock": 59, "inStock": true, "defaultVariantId": 17, "imageUrl": "images/thumbs/sony-dualsense-1.webp",
       "card": {"art": "controller", "color": "#dfe5f2", "bg": "linear-gradient(140deg,#2f3a52 0%,#18203a 55%,#0e1324 100%)"},
       "variants": [
         {"id": 17, "sku": "SNY-DS-WHT", "look": "The original two-tone DualSense design.", "swatch": "#f2f3f5", "name": "White", "options": {"color":"White"}, "priceCents": 399500, "compareAtCents": null, "isDefault": true, "stock": 35, "inStock": true},
@@ -283,7 +283,7 @@
       "badge": null, "badgeLabel": null, "isPreorder": false, "releaseDate": null,
       "priceCents": 649500, "compareAtCents": null, "fromPriceCents": 649500, "variantCount": 2,
       "createdAt": "2025-01-16T00:00:00Z", "rating": 0, "reviewCount": 0,
-      "stock": 26, "inStock": true, "defaultVariantId": 22, "imageUrl": "images/thumbs/samsung-990-pro-1.webp",
+      "stock": 31, "inStock": true, "defaultVariantId": 22, "imageUrl": "images/thumbs/samsung-990-pro-1.webp",
       "card": {"art": "ssd", "color": "#9ccbe0", "bg": "linear-gradient(140deg,#20384a 0%,#112029 55%,#0a1318 100%)"},
       "variants": [
         {"id": 22, "sku": "SAM-990PRO-1TB", "name": "1TB", "options": {"capacity":"1TB"}, "priceCents": 649500, "compareAtCents": null, "isDefault": true, "stock": 19, "inStock": true},

@@ -10,11 +10,16 @@ export function buildCatalog({ products, categories, brands, banners, rates }, f
   // The storefront reads variants[0], so a product without variants cannot be shown.
   const shown = products.filter((p) => p.variants?.length);
 
+  // An "old price" at or below the price is not a discount.
+  const oldPrice = (x) => (x.compareAtCents > x.priceCents ? x.compareAtCents : null);
+
   const product = (doc, i) => {
     const old = oldProduct.get(doc.slug);
+    const compareAtCents = oldPrice(doc);
+    const isSale = doc.badge === "sale"; // its label follows the price, which an admin can edit
     const variants = doc.variants.map(({ _id, ...v }) => {
       const known = oldVariant.get(String(v.sku).toUpperCase());
-      return { ...known, ...v, options: v.options ?? {}, id: known?.id ?? String(_id) };
+      return { ...known, ...v, compareAtCents: oldPrice(v), options: v.options ?? {}, id: known?.id ?? String(_id) };
     });
     const defaultIndex = doc.variants.findIndex((v) => String(v._id) === String(doc.defaultVariantId));
     return {
@@ -25,18 +30,19 @@ export function buildCatalog({ products, categories, brands, banners, rates }, f
       brand: doc.brandName ?? "",
       category: doc.categorySlug,
       topCategory: doc.topCategorySlug,
-      badge: doc.badge ?? null,
-      badgeLabel: doc.badgeLabel ?? null,
+      badge: isSale && !compareAtCents ? null : doc.badge ?? null,
+      badgeLabel: !isSale ? doc.badgeLabel ?? null
+        : compareAtCents ? `-${Math.round((1 - doc.priceCents / compareAtCents) * 100)}% Off` : null,
       isPreorder: doc.isPreorder ?? false,
-      releaseDate: doc.releaseDate?.toISOString() ?? null,
+      releaseDate: doc.releaseDate?.toISOString().slice(0, 10) ?? null,
       priceCents: doc.priceCents,
-      compareAtCents: doc.compareAtCents ?? null,
+      compareAtCents,
       fromPriceCents: doc.fromPriceCents,
       variantCount: variants.length,
       createdAt: doc.createdAt?.toISOString() ?? "",
       rating: doc.rating ?? 0,
       reviewCount: doc.reviewCount ?? 0,
-      stock: doc.stock ?? 0,
+      stock: variants.reduce((sum, v) => sum + (v.stock ?? 0), 0),
       inStock: doc.inStock ?? true,
       defaultVariantId: variants[Math.max(0, defaultIndex)].id,
       imageUrl: doc.imageUrl ?? old?.imageUrl ?? null,

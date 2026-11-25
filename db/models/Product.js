@@ -116,17 +116,6 @@ const productSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-// Query helpers used by the storefront.
-productSchema.query.byCategory = function (slug) {
-  return this.where({ categorySlug: slug, isActive: true });
-};
-productSchema.query.byTopCategory = function (slug) {
-  return this.where({ topCategorySlug: slug, isActive: true });
-};
-productSchema.query.active = function () {
-  return this.where({ isActive: true });
-};
-
 // SKU uniqueness across all embedded variants (two variants in different
 // products must not share a SKU). A unique index on an embedded array field
 // enforces uniqueness across documents, not within one document; within a
@@ -137,7 +126,7 @@ productSchema.pre("save", function () {
   const skus = this.variants.map((v) => v.sku);
   if (new Set(skus).size !== skus.length) {
     const err = new Error("Duplicate variant SKU within product");
-    err.statusCode = 400;
+    err.status = 400; // the error handler in server.js reads err.status
     throw err;
   }
 });

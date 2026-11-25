@@ -29,6 +29,7 @@ export function productFields(body, current = []) {
     if (!variant.sku || !variant.name) throw fail(400, "Every variant needs an SKU and a name.");
     if (!isAmount(variant.priceCents) || !isAmount(variant.stock)) throw fail(400, "Price and stock must be zero or more.");
     if (variant.compareAtCents !== null && !isAmount(variant.compareAtCents)) throw fail(400, "Old price must be zero or more.");
+    if (variant.compareAtCents !== null && variant.compareAtCents <= variant.priceCents) throw fail(400, "Old price must be higher than the price.");
     return variant;
   });
   if (new Set(variants.map((v) => v.sku)).size !== variants.length) throw fail(400, "Each variant needs a different SKU.");

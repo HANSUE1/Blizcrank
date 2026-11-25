@@ -1,13 +1,8 @@
 // Product cards (used by rails, the catalog grid and the wishlist) + the catalog grid itself.
 
 import { esc, money, fmtDate, starsHTML } from "./util.js";
-import { art } from "./art.js";
+import { art, CART_ICON, HEART_ICON } from "./art.js";
 import { state } from "./store.js";
-
-const CART_ICON =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.1 11.2a1.6 1.6 0 0 0 1.6 1.3h7.9a1.6 1.6 0 0 0 1.6-1.2L20.5 8H6"/><circle cx="9.6" cy="20" r="1.4"/><circle cx="16.6" cy="20" r="1.4"/></svg>';
-const HEART_ICON =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3 4.9 13A4.8 4.8 0 0 1 12 6.4 4.8 4.8 0 0 1 19.1 13Z"/></svg>';
 
 // Photo when there is one, otherwise line art. Pass null to force line art.
 export function mediaHTML(p, imageUrl = p.imageUrl) {
@@ -106,33 +101,38 @@ function matchesFilter(p, f) {
   return p.category === f || p.topCategory === f;
 }
 
-export function filterLabel(f) {
+function filterLabel(f) {
   if (f === "all") return "All gear";
   if (f === "deals") return "Deals";
   if (f === "preorders") return "Pre-orders";
   return state.categoryName[f] || f;
 }
 
-// Everything a shopper might type: name, brand, category, description, looks, specs, options.
+// Everything a shopper might type: name, brand, category, description, looks, specs, options. Built once per product.
 function searchText(p) {
-  return [p.name, p.brand, state.categoryName[p.category], p.topCategory, p.description,
+  return p.searchText ??= [p.name, p.brand, state.categoryName[p.category], p.topCategory, p.description,
     p.look?.summary, ...(p.look?.details || []).flat(),
     ...p.specs.flatMap((s) => [s.label, s.value + (s.unit ? " " + s.unit : "")]),
     ...p.variants.flatMap((v) => [v.name, v.look])].filter(Boolean).join(" ").toLowerCase();
 }
 
-export function visibleProducts() {
-  const q = catalog.query.trim().toLowerCase();
+function visibleProducts() {
+  const words = catalog.query.toLowerCase().split(/\s+/).filter(Boolean);
   return state.products
     .filter((p) => matchesFilter(p, catalog.filter))
-    .filter((p) => !q || searchText(p).includes(q))
+    .filter((p) => words.every((w) => searchText(p).includes(w)))
     .sort(SORTS[catalog.sort] || SORTS.featured);
 }
 
+let shownSlugs = null;
+
 export function renderCatalog() {
-  const grid = document.getElementById("product-grid");
   const list = visibleProducts();
-  grid.innerHTML = list.map(cardHTML).join("");
+  const slugs = list.map((p) => p.slug).join();
+  if (slugs !== shownSlugs) { // typing often leaves the results unchanged; do not rebuild and re-animate them
+    shownSlugs = slugs;
+    document.getElementById("product-grid").innerHTML = list.map(cardHTML).join("");
+  }
   document.getElementById("empty-state").hidden = list.length > 0;
 
   const label = filterLabel(catalog.filter);

@@ -43,7 +43,7 @@ export default function ProductForm({ product, brands, categories, onSave, onClo
   }
 
   return (
-    <dialog ref={dialog} onClose={onClose} aria-labelledby="form-title">
+    <dialog ref={dialog} onClose={onClose} onCancel={(e) => saving && e.preventDefault()} aria-labelledby="form-title">
       <form onSubmit={submit}>
         <h2 id="form-title">{product._id ? "Edit product" : "Add product"}</h2>
 
@@ -85,7 +85,7 @@ export default function ProductForm({ product, brands, categories, onSave, onClo
 
         <p role="alert" className="bad">{error}</p>
         <div className="actions end">
-          <button type="button" onClick={onClose}>Cancel</button>
+          <button type="button" disabled={saving} onClick={onClose}>Cancel</button>
           <button type="submit" className="primary" disabled={saving}>{saving ? "Saving" : "Save product"}</button>
         </div>
       </form>

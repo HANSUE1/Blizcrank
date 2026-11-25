@@ -1,9 +1,9 @@
 // Homepage sections: category nav + mega menus, hero carousel, category tiles,
 // brand strip, announcement bar, newsletter.
 
-import { esc, showToast, reducedMotion } from "./util.js";
-import { state } from "./store.js";
-import { art, CATEGORY_ART } from "./art.js";
+import { esc, reducedMotion } from "./util.js";
+import { state, readStored, writeStored } from "./store.js";
+import { art, categoryArt } from "./art.js";
 
 // ---- navigation --------------------------------------------------------------
 
@@ -13,11 +13,9 @@ export function renderNav() {
     if (!c.children.length) {
       return `<li class="nav-item"><a class="nav-link" href="#catalog" data-link="#category=${esc(c.slug)}">${esc(c.name)}</a></li>`;
     }
-    const kids = c.children.map((k) => {
-      const [a, color] = CATEGORY_ART[k.slug] || ["laptop", "#9fb2cf"];
-      return `<li><a href="#catalog" data-link="#category=${esc(k.slug)}" class="mega-link">
-        <span class="mega-icon">${art(a, color)}</span><span>${esc(k.name)}</span></a></li>`;
-    }).join("");
+    const kids = c.children.map((k) =>
+      `<li><a href="#catalog" data-link="#category=${esc(k.slug)}" class="mega-link">
+        <span class="mega-icon">${categoryArt(k.slug)}</span><span>${esc(k.name)}</span></a></li>`).join("");
     return `<li class="nav-item has-menu">
       <a class="nav-link" href="#catalog" data-link="#category=${esc(c.slug)}" aria-haspopup="true">${esc(c.name)}
         <svg class="caret" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></a>
@@ -79,12 +77,6 @@ export function renderHero() {
     if (e.target.closest("[data-hero='prev']")) { go(slide - 1); restart(); }
     if (e.target.closest("[data-hero='next']")) { go(slide + 1); restart(); }
   });
-  // Pause while the shopper is looking at or using it.
-  hero.addEventListener("mouseenter", stop);
-  hero.addEventListener("mouseleave", restart);
-  hero.addEventListener("focusin", stop);
-  hero.addEventListener("focusout", restart);
-  document.addEventListener("visibilitychange", () => (document.hidden ? stop() : restart()));
   restart();
 }
 
@@ -101,25 +93,24 @@ function go(i) {
   dots.forEach((d, n) => { d.classList.toggle("is-active", n === slide); d.setAttribute("aria-current", String(n === slide)); });
 }
 
-function stop() { clearInterval(timer); timer = null; }
 function restart() {
-  stop();
+  clearInterval(timer);
   if (reducedMotion() || state.banners.length < 2) return;
-  timer = setInterval(() => go(slide + 1), 6500);
+  const hero = document.getElementById("hero");
+  timer = setInterval(() => {
+    // Wait while the shopper is looking at or using it.
+    if (!document.hidden && !hero.matches(":hover, :has(:focus-visible)")) go(slide + 1);
+  }, 6500);
 }
 
 // ---- category tiles & brands -------------------------------------------------
 
 export function renderCategoryTiles() {
-  const leaves = state.categories.flatMap((c) => (c.children.length ? c.children : [c])).filter((c) =>
-    state.products.some((p) => p.category === c.slug || p.topCategory === c.slug));
-  document.getElementById("cat-tiles").innerHTML = leaves.map((c) => {
-    const [a, color] = CATEGORY_ART[c.slug] || ["laptop", "#9fb2cf"];
-    const n = state.products.filter((p) => p.category === c.slug || p.topCategory === c.slug).length;
-    return `<a class="cat-tile" href="#catalog" data-link="#category=${esc(c.slug)}">
-      <span class="cat-art">${art(a, color)}</span>
-      <span class="cat-name">${esc(c.name)}</span><span class="cat-count">${n} item${n === 1 ? "" : "s"}</span></a>`;
-  }).join("");
+  const leaves = state.categories.flatMap((c) => (c.children.length ? c.children : [c])).filter((c) => c.productCount);
+  document.getElementById("cat-tiles").innerHTML = leaves.map((c) =>
+    `<a class="cat-tile" href="#catalog" data-link="#category=${esc(c.slug)}">
+      <span class="cat-art">${categoryArt(c.slug)}</span>
+      <span class="cat-name">${esc(c.name)}</span><span class="cat-count">${c.productCount} item${c.productCount === 1 ? "" : "s"}</span></a>`).join("");
 }
 
 export function renderBrands() {
@@ -147,13 +138,9 @@ export function setupNewsletter() {
   const form = document.getElementById("newsletter-form");
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const email = form.elements.email.value;
-    // Frontend-only: no server to subscribe to. Store locally.
-    try {
-      const subs = JSON.parse(localStorage.getItem("blitzcrank-newsletter") || "[]");
-      if (!subs.includes(email)) subs.push(email);
-      localStorage.setItem("blitzcrank-newsletter", JSON.stringify(subs));
-    } catch { /* ignore */ }
+    // No newsletter service yet, so the address stays on this device.
+    const emails = new Set(readStored("blitzcrank-newsletter", []));
+    writeStored("blitzcrank-newsletter", [...emails.add(form.elements.email.value)]);
     form.innerHTML = '<p class="newsletter-done"><span class="gold">✓</span> You\'re in! Watch your inbox for drops and deals.</p>';
   });
 }

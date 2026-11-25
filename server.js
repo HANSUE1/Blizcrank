@@ -24,7 +24,7 @@ app.use("/api/products", productRoutes);
 app.get(["/", "/index.html"], (req, res) => res.sendFile("index.html", { root: ROOT }));
 app.get("/styles.css", (req, res) => res.sendFile("styles.css", { root: ROOT }));
 app.use("/js", express.static(join(ROOT, "js")));
-app.use("/images", express.static(join(ROOT, "images")));
+app.use("/images", express.static(join(ROOT, "images"), { maxAge: "1d" }));
 app.use("/admin", express.static(join(ROOT, "admin/dist")));
 
 app.use((req, res) => res.status(404).json({ error: "Not found" }));

@@ -433,10 +433,10 @@ SCHEMA.md           This document
 
 ```bash
 # Requires MONGODB_URI in ../.env
-node --env-file=../.env db/seeds.js
+npm run seed
 ```
 
-The seed is idempotent: it clears `products`, `categories`, `brands`, `banners` and `shippingRates` before inserting, so it can be re-run against a fresh or existing dev database.
+The seed stops if `products`, `categories`, `brands`, `banners` or `shippingRates` already has data. `npm run seed -- --reset` clears those collections first, including products added on the admin page.
 
 ---
 

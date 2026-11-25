@@ -1,5 +1,4 @@
-// Inline SVG line art for product cards, banners and category tiles
-// (used until real product photos are uploaded via product_images).
+// Inline SVG: line art for product cards, banners and category tiles (shown when there is no photo), and shared icons.
 
 const PATHS = {
   laptop:
@@ -78,6 +77,11 @@ export function art(key, color) {
          `stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
 }
 
+export const CART_ICON =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h2.2l2.1 11.2a1.6 1.6 0 0 0 1.6 1.3h7.9a1.6 1.6 0 0 0 1.6-1.2L20.5 8H6"/><circle cx="9.6" cy="20" r="1.4"/><circle cx="16.6" cy="20" r="1.4"/></svg>';
+export const HEART_ICON =
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.3 4.9 13A4.8 4.8 0 0 1 12 6.4 4.8 4.8 0 0 1 19.1 13Z"/></svg>';
+
 // Category tile illustrations.
 export const CATEGORY_ART = {
   laptops: ["laptop", "#8fa7d4"], components: ["gpu", "#9fb2cf"], peripherals: ["keyboard", "#b48fd4"],
@@ -87,3 +91,5 @@ export const CATEGORY_ART = {
   headsets: ["headset", "#7fd0a8"], monitors: ["monitor", "#e0b670"], handhelds: ["handheld", "#ef8a8a"],
   controllers: ["controller", "#dfe5f2"],
 };
+
+export const categoryArt = (slug) => art(...(CATEGORY_ART[slug] ?? ["laptop", "#9fb2cf"]));
